@@ -29,6 +29,12 @@
         <!-- Dependencies -->
 
         <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-spring-boot-starter</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>

@@ -15,6 +15,7 @@ public interface JpaUserMapper {
     @Mapping(target = "createdDate", source = "audit.createdDate")
     @Mapping(target = "lastModifiedDate", source = "audit.lastModifiedDate")
     @Mapping(target = "isAccountNonLocked", source = "accountNonLocked")
+    @Mapping(target = "password", ignore = true)
     UserJpaEntity mapToEntity(User user);
 
 

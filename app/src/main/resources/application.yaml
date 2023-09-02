@@ -4,10 +4,6 @@ spring:
     username: postgres
     password: admin
 
-  mvc:
-    problemdetails:
-      enabled: true
-
   jpa:
     hibernate:
       ddl-auto: none
@@ -16,6 +12,27 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        transaction:
+          jta:
+            platform: org.hibernate.service.jta.platform.internal.AtomikosJtaPlatform
+    open-in-view: false
+
+  jta:
+    atomikos:
+      properties:
+        enable-logging: true
+        max-timeout: 900000
+        service: com.atomikos.icatch.standalone.UserTransactionServiceFactory
+    enabled: true
+
+
+  mvc:
+    problemdetails:
+      enabled: true
+
+logging:
+  level:
+    com.atomikos: DEBUG
 
 app:
   jwt:

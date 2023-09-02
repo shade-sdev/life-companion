@@ -27,4 +27,5 @@ public class JpaRoleRepositoryImpl implements RoleRepository {
                                         .name(it.getName())
                                         .build());
     }
+
 }
