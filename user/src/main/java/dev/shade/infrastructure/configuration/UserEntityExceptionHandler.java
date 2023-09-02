@@ -1,6 +1,5 @@
 package dev.shade.infrastructure.configuration;
 
-import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -23,7 +22,7 @@ public class UserEntityExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(@NotNull Exception ex, Object body, @NotNull HttpHeaders headers, HttpStatusCode statusCode, @NotNull WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
         HttpStatus status = HttpStatus.valueOf(statusCode.value());
         ErrorResponse build = ErrorResponse.builder(ex, status, ex.getMessage())
                                            .detail(ex.getMessage())
