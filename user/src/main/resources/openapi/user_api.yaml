@@ -10,7 +10,7 @@ tags:
     description: User api
 
 paths:
-  /user:
+  /users:
     post:
       operationId: createUser
       summary: Create a user
@@ -63,7 +63,7 @@ paths:
         '200':
           $ref: '#/components/responses/UsersResponseBody'
 
-  /user/{userId}:
+  /users/{userId}:
     get:
       operationId: getUserById
       summary: Get User by ID
@@ -154,7 +154,6 @@ components:
           type: string
         role:
           type: string
-          format: uuid
 
     UserPageApiBean:
       description: User Page Model

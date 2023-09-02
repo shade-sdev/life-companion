@@ -1,4 +1,4 @@
-package dev.shade.repository;
+package dev.shade.domain.repository;
 
 import dev.shade.domain.user.User;
 

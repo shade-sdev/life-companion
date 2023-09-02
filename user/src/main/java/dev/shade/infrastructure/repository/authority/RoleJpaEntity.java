@@ -1,4 +1,4 @@
-package dev.shade.infrastructure.repository.user;
+package dev.shade.infrastructure.repository.authority;
 
 import dev.shade.domain.user.RoleType;
 import jakarta.persistence.*;
@@ -29,7 +29,7 @@ public class RoleJpaEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private RoleType name;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id", insertable = false, updatable = false),

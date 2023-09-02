@@ -1,6 +1,7 @@
 package dev.shade.infrastructure.repository.user;
 
 import dev.shade.infrastructure.repository.Auditable;
+import dev.shade.infrastructure.repository.authority.RoleJpaEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

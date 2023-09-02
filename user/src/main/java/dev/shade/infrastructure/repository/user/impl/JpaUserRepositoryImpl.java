@@ -1,9 +1,9 @@
 package dev.shade.infrastructure.repository.user.impl;
 
+import dev.shade.domain.repository.UserRepository;
 import dev.shade.domain.user.User;
 import dev.shade.infrastructure.repository.user.JpaUserMapper;
 import dev.shade.infrastructure.repository.user.UserJpaEntityRepository;
-import dev.shade.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,15 +25,15 @@ public class JpaUserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
         return Optional.of(user)
-                .map(mapper::mapToEntity)
-                .map(repository::save)
-                .map(mapper::mapToUser)
-                .orElse(User.builder().build());
+                       .map(mapper::mapToEntity)
+                       .map(repository::save)
+                       .map(mapper::mapToUser)
+                       .orElse(User.builder().build());
     }
 
     @Override
     public Optional<User> findById(UUID id) {
         return repository.findById(id)
-                .map(mapper::mapToUser);
+                         .map(mapper::mapToUser);
     }
 }

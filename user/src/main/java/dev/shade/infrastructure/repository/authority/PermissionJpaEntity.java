@@ -1,4 +1,4 @@
-package dev.shade.infrastructure.repository.user;
+package dev.shade.infrastructure.repository.authority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

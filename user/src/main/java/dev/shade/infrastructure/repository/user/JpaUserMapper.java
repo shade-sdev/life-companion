@@ -3,6 +3,7 @@ package dev.shade.infrastructure.repository.user;
 import dev.shade.domain.Auditable;
 import dev.shade.domain.user.Role;
 import dev.shade.domain.user.User;
+import dev.shade.infrastructure.repository.authority.RoleJpaEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
