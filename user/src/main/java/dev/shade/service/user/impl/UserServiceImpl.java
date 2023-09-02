@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         User currentUser = repository.findById(userId)
                                      .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        User updatedUser = currentUser.update("Shade", user);
+        User updatedUser = currentUser.update(user, "Shade");
         validator.validate(updatedUser);
         repository.save(updatedUser);
     }
