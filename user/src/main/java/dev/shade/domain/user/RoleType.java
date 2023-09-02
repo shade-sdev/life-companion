@@ -1,2 +1,6 @@
-package dev.shade.domain.user;public class RoleType {
+package dev.shade.domain.user;
+
+public enum RoleType {
+    ROLE_ADMIN,
+    ROLE_USER
 }

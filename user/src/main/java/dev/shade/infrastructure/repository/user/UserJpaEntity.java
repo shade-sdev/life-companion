@@ -17,7 +17,7 @@ import java.util.UUID;
 @SuperBuilder(toBuilder = true)
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-public class UserEntity extends Auditable {
+public class UserJpaEntity extends Auditable {
 
     @Id
     @Column(name = "id")

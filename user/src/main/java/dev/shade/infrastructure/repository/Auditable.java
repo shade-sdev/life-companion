@@ -1,4 +1,4 @@
-package dev.shade.infastructure.repository;
+package dev.shade.infrastructure.repository;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;

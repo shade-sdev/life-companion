@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: User API
+  description: User API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080/api/v1'
+tags:
+  - name: users
+    description: User api
+
+paths:
+  /user:
+    post:
+      operationId: createUser
+      summary: Create a user
+      tags:
+        - users
+      requestBody:
+        $ref: '#/components/requestBodies/UserCreationRequestBody'
+      responses:
+        '200':
+          description: Successful Operation
+
+    get:
+      operationId: getUsers
+      summary: Search for a user with a prefix in its name
+      tags:
+        - users
+      parameters:
+        - in: query
+          name: namePrefix
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: id
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: page
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: size
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: sort
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: order
+          required: false
+          schema:
+            $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersResponseBody'
+
+  /user/{userId}:
+    get:
+      operationId: getUserById
+      summary: Get User by ID
+      tags:
+        - users
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          $ref: '#/components/responses/UserResponseBody'
+
+    put:
+      operationId: updateUser
+      summary: Update a user
+      tags:
+        - users
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        $ref: '#/components/requestBodies/UserUpdateRequestBody'
+      responses:
+        '200':
+          description: Successful Operation
+
+  /token:
+    post:
+      operationId: getToken
+      summary: Get User by ID
+      tags:
+        - users
+      requestBody:
+        $ref: '#/components/requestBodies/TokenRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/TokenResponseBody'
+
+components:
+  schemas:
+    UserCreationRequestApiBean:
+      type: object
+      properties:
+        userName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    UserUpdateRequestApiBean:
+      type: object
+      properties:
+        userName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+
+    UserApiBean:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          format: uuid
+
+    UserPageApiBean:
+      description: User Page Model
+      type: object
+      properties:
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserApiBean'
+
+    UserTokenApiBean:
+      description: Model for request token
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    JwtTokenApiBean:
+      description: Model for authorization token
+      type: object
+      properties:
+        token:
+          type: string
+
+    Order:
+      description: Order enums
+      type: string
+      enum: [ ASC, DESC ]
+  requestBodies:
+    UserCreationRequestBody:
+      description: A Json object containing user information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserCreationRequestApiBean'
+    UserUpdateRequestBody:
+      description: A Json object containing user information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserUpdateRequestApiBean'
+    TokenRequestBody:
+      description: Body for generating jwt tokens
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserTokenApiBean'
+
+  responses:
+
+    UserResponseBody:
+      description: A Json object containing user information
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserApiBean'
+
+    UsersResponseBody:
+      description: A Json object containing users by page
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserPageApiBean'
+
+    TokenResponseBody:
+      description: Object which holds the authorization token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/JwtTokenApiBean'
