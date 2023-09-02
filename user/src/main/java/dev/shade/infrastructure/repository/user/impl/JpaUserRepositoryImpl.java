@@ -36,4 +36,10 @@ public class JpaUserRepositoryImpl implements UserRepository {
         return repository.findById(id)
                          .map(mapper::mapToUser);
     }
+
+    @Override
+    public Optional<User> findBy(String username) {
+        return repository.findByUserName(username)
+                         .map(mapper::mapToUser);
+    }
 }

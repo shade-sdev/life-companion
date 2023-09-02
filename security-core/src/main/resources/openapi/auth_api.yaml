@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: Auth API
+  description: User API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080/api/v1'
+tags:
+  - name: auth
+    description: Auth api
+
+paths:
+  /auth/register:
+    post:
+      operationId: createUser
+      summary: Create a user
+      tags:
+        - auth
+      requestBody:
+        $ref: '#/components/requestBodies/UserCreationRequestBody'
+      responses:
+        '200':
+          description: Successful Operation
+
+  /auth/login:
+    post:
+      operationId: authenticateUser
+      summary: Authenticate a user
+      tags:
+        - auth
+      requestBody:
+        $ref: '#/components/requestBodies/UserAuthenticationRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserAuthenticatedResponseBody'
+
+components:
+  schemas:
+    UserCreationRequestApiBean:
+      type: object
+      properties:
+        userName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    UserAuthRequestApiBean:
+      type: object
+      properties:
+        userName:
+          type: string
+        password:
+          type: string
+
+    UserAuthenticatedResponseApiBean:
+      type: object
+      properties:
+        token:
+          type: string
+        refresh_token:
+          type: string
+
+  requestBodies:
+    UserCreationRequestBody:
+      description: A Json object containing user information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserCreationRequestApiBean'
+    UserAuthenticationRequestBody:
+      description: A Json object containing user information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAuthRequestApiBean'
+
+  responses:
+    UserAuthenticatedResponseBody:
+      description: A Json object containing user information
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserAuthenticatedResponseApiBean'

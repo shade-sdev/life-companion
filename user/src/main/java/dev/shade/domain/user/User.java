@@ -7,11 +7,12 @@ import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Value;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Value
 @Builder(toBuilder = true)
-public class User {
+public class User implements Serializable {
 
     @Default
     @NotNull
@@ -19,6 +20,9 @@ public class User {
 
     @NotNull
     String userName;
+
+    @NotNull
+    String password;
 
     String firstName;
 

@@ -3,11 +3,12 @@ package dev.shade.domain;
 import lombok.Builder;
 import lombok.Value;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Builder(toBuilder = true)
 @Value
-public class Auditable {
+public class Auditable implements Serializable {
 
     LocalDateTime createdDate;
 

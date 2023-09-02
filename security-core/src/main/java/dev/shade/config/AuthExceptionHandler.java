@@ -1,4 +1,4 @@
-package dev.shade.infrastructure.configuration;
+package dev.shade.config;
 
 import dev.shade.service.exception.GlobalProblemDetail;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,8 +14,8 @@ import java.net.URI;
 import java.sql.SQLException;
 import java.time.Instant;
 
-@ControllerAdvice(basePackages = "dev.shade.infrastructure.api")
-public class UserEntityExceptionHandler extends ResponseEntityExceptionHandler {
+@ControllerAdvice(basePackages = "dev.shade.api")
+public class AuthExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<Object> handleTestException(Exception ex, WebRequest webRequest) {

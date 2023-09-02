@@ -13,5 +13,7 @@ public interface UserService {
 
     Optional<User> findById(@NotNull UUID userId);
 
+    Optional<User> findBy(@NotNull String username);
+
     void updateUser(@NotNull UUID userId, @Valid @NotNull User user);
 }

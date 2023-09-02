@@ -11,17 +11,6 @@ tags:
 
 paths:
   /users:
-    post:
-      operationId: createUser
-      summary: Create a user
-      tags:
-        - users
-      requestBody:
-        $ref: '#/components/requestBodies/UserCreationRequestBody'
-      responses:
-        '200':
-          description: Successful Operation
-
     get:
       operationId: getUsers
       summary: Search for a user with a prefix in its name
@@ -112,20 +101,6 @@ paths:
 
 components:
   schemas:
-    UserCreationRequestApiBean:
-      type: object
-      properties:
-        userName:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-
     UserUpdateRequestApiBean:
       type: object
       properties:
@@ -193,13 +168,6 @@ components:
       type: string
       enum: [ ASC, DESC ]
   requestBodies:
-    UserCreationRequestBody:
-      description: A Json object containing user information
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UserCreationRequestApiBean'
     UserUpdateRequestBody:
       description: A Json object containing user information
       required: true
@@ -216,7 +184,6 @@ components:
             $ref: '#/components/schemas/UserTokenApiBean'
 
   responses:
-
     UserResponseBody:
       description: A Json object containing user information
       content:

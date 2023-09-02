@@ -28,6 +28,7 @@
     <modules>
         <module>app</module>
         <module>user</module>
+        <module>security-core</module>
     </modules>
 
     <dependencies>

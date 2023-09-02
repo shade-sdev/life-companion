@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> findBy(String username) {
+        return repository.findBy(username);
+    }
+
+    @Override
     @Transactional
     public void updateUser(@NotNull UUID userId, @Valid @NotNull User user) {
         User currentUser = repository.findById(userId)
