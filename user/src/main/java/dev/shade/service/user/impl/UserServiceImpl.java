@@ -5,9 +5,10 @@ import dev.shade.domain.repository.UserRepository;
 import dev.shade.domain.user.Role;
 import dev.shade.domain.user.RoleType;
 import dev.shade.domain.user.User;
-import dev.shade.security.SecurityContextHelper;
 import dev.shade.service.user.UserService;
 import dev.shade.service.user.model.UserUpdate;
+import dev.shade.shared.exception.NotFoundException;
+import dev.shade.shared.security.SecurityContextHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
@@ -46,12 +47,14 @@ public class UserServiceImpl implements UserService {
     public User createUser(@Valid @NotNull User user) {
         Role role = roleRepository.findBy(RoleType.ROLE_USER)
                                   .orElseThrow();
-        return repository.save(user.initialize(role, "system"));
+        User createdUser = user.initialize(role, "system");
+        return repository.save(createdUser.validate(validator));
     }
 
     @Override
-    public Optional<User> findById(UUID userId) {
-        return repository.findById(userId);
+    public User findById(UUID userId) {
+        return repository.findById(userId)
+                         .orElseThrow(() -> new NotFoundException(userId, User.class));
     }
 
     @Override
@@ -63,10 +66,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUser(@NotNull UUID userId, @Valid @NotNull UserUpdate user) {
         User currentUser = repository.findById(userId)
-                                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                                     .orElseThrow(() -> new NotFoundException(userId, User.class));
 
         User updatedUser = currentUser.update(user, securityContextHelper.username());
-        validator.validate(updatedUser);
-        repository.save(updatedUser);
+        repository.save(updatedUser.validate(validator));
     }
 }

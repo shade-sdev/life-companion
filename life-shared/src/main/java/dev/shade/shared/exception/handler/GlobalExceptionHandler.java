@@ -1,5 +1,8 @@
-package dev.shade.shared;
+package dev.shade.shared.exception.handler;
 
+import dev.shade.shared.exception.NotFoundException;
+import dev.shade.shared.exception.model.GlobalProblemDetail;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.lang.NonNull;
@@ -11,8 +14,21 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.net.URI;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.Optional;
 
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(NotFoundException.class)
+    public ProblemDetail handleNotFoundException(NotFoundException ex) {
+        return new GlobalProblemDetail(ex.getCode(), ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ProblemDetail handleConstraintViolationException(ConstraintViolationException ex) {
+        return new GlobalProblemDetail("DATA_CONSTRAINT_VIOLATION",
+                extractErrorMessage(ex.getMessage()).orElse(ex.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ProblemDetail handleDataIntegrityViolation(DataIntegrityViolationException ex) {
@@ -46,5 +62,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                            .build();
 
         return new ResponseEntity<>(build, status);
+    }
+
+    public static Optional<String> extractErrorMessage(String input) {
+        if (input.contains(".")) {
+            int lastDotIndex = input.lastIndexOf(".");
+            return input.substring(lastDotIndex + 1).describeConstable();
+        } else {
+            return input.describeConstable();
+        }
     }
 }

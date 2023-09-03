@@ -26,7 +26,7 @@ public class UserRestController implements UsersApi {
 
     @Override
     public ResponseEntity<UserApiBean> getUserById(UUID userId) {
-        return ResponseEntity.of(userService.findById(userId).map(mapper::mapToUserApiBean));
+        return ResponseEntity.ok(mapper.mapToUserApiBean(userService.findById(userId)));
     }
 
     @Override

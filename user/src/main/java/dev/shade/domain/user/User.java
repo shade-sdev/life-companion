@@ -1,19 +1,23 @@
 package dev.shade.domain.user;
 
 import dev.shade.domain.Auditable;
+import dev.shade.domain.DomainValidator;
 import dev.shade.service.user.model.UserUpdate;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Builder.Default;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 @Value
+@EqualsAndHashCode(callSuper = false)
 @Builder(toBuilder = true)
-public class User implements Serializable {
+public class User extends DomainValidator<User> implements Serializable {
 
     @Default
     @NotNull
@@ -45,6 +49,11 @@ public class User implements Serializable {
     @Default
     boolean isAccountNonLocked = true;
 
+    public User validate(Validator validator) {
+        this.validate(this, validator);
+        return this;
+    }
+
     public User initialize(Role role, String createdBy) {
         return this.toBuilder()
                    .role(role)
@@ -64,4 +73,5 @@ public class User implements Serializable {
                               .build())
                    .build();
     }
+
 }

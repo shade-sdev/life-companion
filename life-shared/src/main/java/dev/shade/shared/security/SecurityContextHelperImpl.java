@@ -1,4 +1,4 @@
-package dev.shade.security;
+package dev.shade.shared.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

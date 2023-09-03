@@ -12,7 +12,7 @@ public interface UserService {
 
     User createUser(@Valid @NotNull User user);
 
-    Optional<User> findById(@NotNull UUID userId);
+    User findById(@NotNull UUID userId);
 
     Optional<User> findBy(@NotNull String username);
 

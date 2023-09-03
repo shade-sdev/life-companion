@@ -1,4 +1,4 @@
-package dev.shade.shared;
+package dev.shade.shared.exception.model;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
