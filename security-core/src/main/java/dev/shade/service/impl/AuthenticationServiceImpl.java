@@ -3,7 +3,6 @@ package dev.shade.service.impl;
 import dev.shade.config.JwtService;
 import dev.shade.domain.user.User;
 import dev.shade.model.UserAuthenticatedResponseApiBean;
-import dev.shade.model.UserPrincipal;
 import dev.shade.service.AuthenticationService;
 import dev.shade.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +15,22 @@ import org.springframework.stereotype.Service;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserService userService;
-
     private final JwtService jwtService;
+    private final SecurityMapper mapper;
+
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthenticationServiceImpl(UserService userService,
                                      JwtService jwtService,
+                                     SecurityMapper mapper,
                                      AuthenticationManager authenticationManager,
                                      PasswordEncoder passwordEncoder
     ) {
         this.userService = userService;
         this.jwtService = jwtService;
+        this.mapper = mapper;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
     }
@@ -49,9 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 new UsernamePasswordAuthenticationToken(username, password)
         );
         return userService.findBy(username)
-                          .map(it -> UserPrincipal.builder()
-                                                  .user(it)
-                                                  .build())
+                          .map(mapper::mapToUserPrincipal)
                           .map(jwtService::generateToken)
                           .map(it -> {
                               UserAuthenticatedResponseApiBean userResponse = new UserAuthenticatedResponseApiBean();
