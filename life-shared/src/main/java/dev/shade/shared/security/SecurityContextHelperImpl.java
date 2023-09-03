@@ -1,9 +1,8 @@
 package dev.shade.shared.security;
 
-import dev.shade.shared.security.permissionevalutor.SecurityPermissionResolver;
-import dev.shade.shared.security.permissionevalutor.model.PermissionScope;
-import dev.shade.shared.security.permissionevalutor.model.RoleCode;
-import dev.shade.shared.security.permissionevalutor.model.UserPrincipal;
+import dev.shade.shared.security.model.PermissionScope;
+import dev.shade.shared.security.model.RoleCode;
+import dev.shade.shared.security.model.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

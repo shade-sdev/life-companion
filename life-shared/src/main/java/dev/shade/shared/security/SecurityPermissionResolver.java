@@ -1,8 +1,8 @@
-package dev.shade.shared.security.permissionevalutor;
+package dev.shade.shared.security;
 
-import dev.shade.shared.security.permissionevalutor.model.AccessCode;
-import dev.shade.shared.security.permissionevalutor.model.AccessType;
-import dev.shade.shared.security.permissionevalutor.model.PermissionScope;
+import dev.shade.shared.security.model.AccessCode;
+import dev.shade.shared.security.model.AccessType;
+import dev.shade.shared.security.model.PermissionScope;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 

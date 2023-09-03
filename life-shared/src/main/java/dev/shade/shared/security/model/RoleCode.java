@@ -1,4 +1,4 @@
-package dev.shade.shared.security.permissionevalutor.model;
+package dev.shade.shared.security.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

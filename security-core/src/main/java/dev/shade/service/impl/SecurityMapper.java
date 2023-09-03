@@ -3,8 +3,8 @@ package dev.shade.service.impl;
 import dev.shade.domain.user.Permission;
 import dev.shade.domain.user.Role;
 import dev.shade.domain.user.User;
-import dev.shade.shared.security.permissionevalutor.model.RoleCode;
-import dev.shade.shared.security.permissionevalutor.model.UserPrincipal;
+import dev.shade.shared.security.model.RoleCode;
+import dev.shade.shared.security.model.UserPrincipal;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

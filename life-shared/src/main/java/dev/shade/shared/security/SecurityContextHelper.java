@@ -1,7 +1,7 @@
 package dev.shade.shared.security;
 
-import dev.shade.shared.security.permissionevalutor.model.PermissionScope;
-import dev.shade.shared.security.permissionevalutor.model.RoleCode;
+import dev.shade.shared.security.model.PermissionScope;
+import dev.shade.shared.security.model.RoleCode;
 
 import java.util.Set;
 
