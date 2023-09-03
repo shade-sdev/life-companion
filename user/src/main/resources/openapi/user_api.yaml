@@ -87,18 +87,6 @@ paths:
         '200':
           description: Successful Operation
 
-  /token:
-    post:
-      operationId: getToken
-      summary: Get User by ID
-      tags:
-        - users
-      requestBody:
-        $ref: '#/components/requestBodies/TokenRequestBody'
-      responses:
-        '200':
-          $ref: '#/components/responses/TokenResponseBody'
-
 components:
   schemas:
     UserUpdateRequestApiBean:
@@ -147,22 +135,6 @@ components:
           items:
             $ref: '#/components/schemas/UserApiBean'
 
-    UserTokenApiBean:
-      description: Model for request token
-      type: object
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-
-    JwtTokenApiBean:
-      description: Model for authorization token
-      type: object
-      properties:
-        token:
-          type: string
-
     Order:
       description: Order enums
       type: string
@@ -175,13 +147,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UserUpdateRequestApiBean'
-    TokenRequestBody:
-      description: Body for generating jwt tokens
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UserTokenApiBean'
 
   responses:
     UserResponseBody:
@@ -197,10 +162,3 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UserPageApiBean'
-
-    TokenResponseBody:
-      description: Object which holds the authorization token
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/JwtTokenApiBean'
