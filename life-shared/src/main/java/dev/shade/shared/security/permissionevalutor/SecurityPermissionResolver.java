@@ -39,19 +39,19 @@ public class SecurityPermissionResolver {
 
     private static final Map<AccessCode, Function<String, Set<String>>> OTHER_PERMISSION = Map.of(
 
-            AccessCode.C, domain -> Stream.of(AccessType.OTHER_CREATE, AccessType.MINE_MANAGEMENT)
+            AccessCode.C, domain -> Stream.of(AccessType.OTHER_CREATE, AccessType.OTHER_MANAGEMENT)
                                           .map(accessType -> String.format(ACCESS_CONCAT, domain, accessType))
                                           .collect(Collectors.toSet()),
 
-            AccessCode.R, domain -> Stream.of(AccessType.OTHER_READ, AccessType.MINE_MANAGEMENT)
+            AccessCode.R, domain -> Stream.of(AccessType.OTHER_READ, AccessType.OTHER_MANAGEMENT)
                                           .map(accessType -> String.format(ACCESS_CONCAT, domain, accessType))
                                           .collect(Collectors.toSet()),
 
-            AccessCode.U, domain -> Stream.of(AccessType.OTHER_UPDATE, AccessType.MINE_MANAGEMENT)
+            AccessCode.U, domain -> Stream.of(AccessType.OTHER_UPDATE, AccessType.OTHER_MANAGEMENT)
                                           .map(accessType -> String.format(ACCESS_CONCAT, domain, accessType))
                                           .collect(Collectors.toSet()),
 
-            AccessCode.D, domain -> Stream.of(AccessType.OTHER_DELETE, AccessType.MINE_MANAGEMENT)
+            AccessCode.D, domain -> Stream.of(AccessType.OTHER_DELETE, AccessType.OTHER_MANAGEMENT)
                                           .map(accessType -> String.format(ACCESS_CONCAT, domain, accessType))
                                           .collect(Collectors.toSet())
     );
