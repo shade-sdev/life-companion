@@ -1,6 +1,7 @@
 package dev.shade.domain.user;
 
 import dev.shade.domain.Auditable;
+import dev.shade.service.user.model.UserUpdate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -53,7 +54,7 @@ public class User implements Serializable {
                    .build();
     }
 
-    public User update(User updatedUser, String updatedBy) {
+    public User update(UserUpdate updatedUser, String updatedBy) {
         return this.toBuilder()
                    .firstName(updatedUser.getFirstName())
                    .lastName(updatedUser.getLastName())

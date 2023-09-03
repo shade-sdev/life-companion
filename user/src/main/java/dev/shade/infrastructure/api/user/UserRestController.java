@@ -2,6 +2,7 @@ package dev.shade.infrastructure.api.user;
 
 import dev.shade.service.user.UserService;
 import dev.shade.service.user.model.UserApiBean;
+import dev.shade.service.user.model.UserUpdate;
 import dev.shade.service.user.model.UserUpdateRequestApiBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,11 @@ public class UserRestController implements UsersApi {
 
     @Override
     public ResponseEntity<Void> updateUser(UUID userId, UserUpdateRequestApiBean userUpdateRequestApiBean) {
-        userService.updateUser(userId, mapper.mapToUser(userUpdateRequestApiBean));
+        userService.updateUser(userId, UserUpdate.builder()
+                                                 .firstName(userUpdateRequestApiBean.getFirstName())
+                                                 .lastName(userUpdateRequestApiBean.getLastName())
+                                                 .email(userUpdateRequestApiBean.getEmail())
+                                                 .build());
         return ResponseEntity.ok().build();
     }
 }

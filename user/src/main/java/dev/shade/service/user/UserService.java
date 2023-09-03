@@ -1,6 +1,7 @@
 package dev.shade.service.user;
 
 import dev.shade.domain.user.User;
+import dev.shade.service.user.model.UserUpdate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
@@ -15,5 +16,5 @@ public interface UserService {
 
     Optional<User> findBy(@NotNull String username);
 
-    void updateUser(@NotNull UUID userId, @Valid @NotNull User user);
+    void updateUser(@NotNull UUID userId, @Valid @NotNull UserUpdate user);
 }

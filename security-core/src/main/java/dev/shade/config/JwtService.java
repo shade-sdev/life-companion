@@ -15,6 +15,7 @@ import java.util.Date;
 public class JwtService {
 
     private static final String ISSUER = "life-companion";
+    private static final String AUTHORITIES = "authorities";
 
     @Value("${app.jwt.secret}")
     private String secretKey;
@@ -31,7 +32,7 @@ public class JwtService {
         return JWT.create()
                   .withIssuer(ISSUER)
                   .withSubject(userPrincipal.getUsername())
-                  .withArrayClaim("authorities", userPrincipal.getAuthorities()
+                  .withArrayClaim(AUTHORITIES, userPrincipal.getAuthorities()
                                                               .stream()
                                                               .map(GrantedAuthority::getAuthority)
                                                               .toArray(String[]::new))
