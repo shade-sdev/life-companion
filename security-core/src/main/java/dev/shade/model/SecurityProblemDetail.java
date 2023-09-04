@@ -2,26 +2,24 @@ package dev.shade.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import dev.shade.shared.exception.model.GlobalProblemDetail;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ProblemDetail;
 
 import java.io.OutputStream;
 import java.net.URI;
-import java.time.Instant;
 
 public class SecurityProblemDetail {
 
     @SneakyThrows
     public void response(HttpServletRequest request, HttpServletResponse response, Exception e) {
-        ProblemDetail re = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
-        re.setType(URI.create("http://shade-platform.com/errors/forbidden"));
-        re.setTitle(HttpStatus.FORBIDDEN.getReasonPhrase());
-        re.setInstance(URI.create(request.getRequestURI()));
-        re.setProperty("timestamp", Instant.now());
+        GlobalProblemDetail globalProblemDetail = new GlobalProblemDetail("ACCESS_DENIED",
+                                                                          e.getMessage(),
+                                                                          HttpStatus.FORBIDDEN,
+                                                                          URI.create(request.getRequestURI()));
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -30,7 +28,7 @@ public class SecurityProblemDetail {
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        mapper.writeValue(responseStream, re);
+        mapper.writeValue(responseStream, globalProblemDetail);
         responseStream.flush();
     }
 }

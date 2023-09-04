@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -23,11 +24,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new GlobalProblemDetail(ex.getCode(), ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ProblemDetail handleAccessDeniedException(AccessDeniedException ex) {
+        return new GlobalProblemDetail("ACCESS_DENIED", ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ProblemDetail handleConstraintViolationException(ConstraintViolationException ex) {
         return new GlobalProblemDetail("DATA_CONSTRAINT_VIOLATION",
-                extractErrorMessage(ex.getMessage()).orElse(ex.getMessage()),
-                HttpStatus.BAD_REQUEST);
+                                       extractErrorMessage(ex.getMessage()).orElse(ex.getMessage()),
+                                       HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -41,7 +47,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<Object> handleGlobalException(Exception ex, WebRequest webRequest) {
-        return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatusCode.valueOf(500), webRequest);
+        return handleExceptionInternal(ex,
+                                       null,
+                                       new HttpHeaders(),
+                                       HttpStatusCode.valueOf(500),
+                                       webRequest);
     }
 
     @Override
@@ -49,8 +59,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                              Object body,
                                                              @NonNull HttpHeaders headers,
                                                              HttpStatusCode statusCode,
-                                                             @NonNull WebRequest request
-    ) {
+                                                             @NonNull WebRequest request) {
         HttpStatus status = HttpStatus.valueOf(statusCode.value());
         ErrorResponse build = ErrorResponse.builder(ex, status, ex.getMessage())
                                            .detail(ex.getMessage())
