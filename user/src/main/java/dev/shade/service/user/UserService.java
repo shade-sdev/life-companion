@@ -13,7 +13,7 @@ public interface UserService {
 
     User createUser(@Valid @NotNull User user);
 
-    @PreAuthorize("@userSecurity.authorize(#userId, 'User#R')")
+    @PreAuthorize("hasPermission(#userId, 'dev.shade.domain.user.User', 'User#R')")
     User findById(@NotNull UUID userId);
 
     @PreAuthorize("hasPermission(#userId, 'dev.shade.domain.user.User', 'User#U')")
