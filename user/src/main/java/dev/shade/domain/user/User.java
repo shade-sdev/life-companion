@@ -2,7 +2,9 @@ package dev.shade.domain.user;
 
 import dev.shade.domain.Auditable;
 import dev.shade.domain.DomainValidator;
+import dev.shade.domain.user.validation.ValidSecretKey;
 import dev.shade.service.user.model.UserUpdate;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +14,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Value
@@ -25,9 +29,6 @@ public class User extends DomainValidator<User> implements Serializable {
 
     @NotNull
     String userName;
-
-    @NotNull
-    String password;
 
     String firstName;
 
@@ -45,12 +46,37 @@ public class User extends DomainValidator<User> implements Serializable {
     @NotNull
     Auditable audit = Auditable.builder().build();
 
+    @Valid
     @NotNull
     @Default
-    boolean isAccountNonLocked = true;
+    Security security = Security.builder().build();
+
+    @Value
+    @Builder(toBuilder = true)
+    public static class Security implements Serializable {
+
+        @NotNull
+        String password;
+
+        @NotNull
+        @Default
+        boolean isAccountNonLocked = true;
+
+        @NotNull
+        @Default
+        boolean isTwoFactorEnabled = false;
+
+        @NotNull(groups = ValidSecretKey.class)
+        String twoFactorSecretKey;
+
+    }
 
     public User validate(Validator validator) {
-        this.validate(this, validator);
+        List<Class<?>> groups = new ArrayList<>();
+        if (this.getSecurity().isTwoFactorEnabled) {
+            groups.add(ValidSecretKey.class);
+        }
+        this.validate(this, validator, groups.toArray(new Class[0]));
         return this;
     }
 
@@ -61,6 +87,20 @@ public class User extends DomainValidator<User> implements Serializable {
                                    .createdBy(createdBy)
                                    .build())
                    .build();
+    }
+
+    public User initializeSecurity(String password, String secretKey) {
+        UserBuilder userBuilder = this.toBuilder();
+        User.Security.SecurityBuilder securityBuilder = this.getSecurity()
+                                                            .toBuilder()
+                                                            .password(password);
+
+        if (this.getSecurity().isTwoFactorEnabled) {
+            securityBuilder.twoFactorSecretKey(secretKey);
+        }
+
+        return userBuilder.security(securityBuilder.build())
+                          .build();
     }
 
     public User update(UserUpdate updatedUser, String updatedBy) {

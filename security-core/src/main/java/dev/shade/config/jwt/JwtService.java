@@ -1,4 +1,4 @@
-package dev.shade.config;
+package dev.shade.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class DomainValidator<T> {
 
-    public void validate(T domainObject, Validator validator) {
-        Set<ConstraintViolation<T>> violations = validator.validate(domainObject);
+    public void validate(T domainObject, Validator validator, Class<?>[] groups) {
+        Set<ConstraintViolation<T>> violations = validator.validate(domainObject, groups);
         if (!violations.isEmpty()) {
             String errorMessage = violations.stream()
                                             .map(v -> v.getPropertyPath() + ": " + v.getMessage())

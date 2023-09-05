@@ -1,26 +1,35 @@
 package dev.shade.service.impl;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import dev.shade.config.JwtService;
+import dev.shade.config.jwt.JwtService;
+import dev.shade.config.totp.TwoFactorAuthenticationService;
 import dev.shade.domain.user.User;
 import dev.shade.model.UserAuthenticatedResponseApiBean;
 import dev.shade.service.AuthenticationService;
 import dev.shade.service.user.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final String BEARER = "Bearer ";
 
     private final UserService userService;
     private final JwtService jwtService;
+    private final TwoFactorAuthenticationService twoFactorAuthenticationService;
     private final SecurityMapper mapper;
 
     private final AuthenticationManager authenticationManager;
@@ -29,25 +38,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     public AuthenticationServiceImpl(UserService userService,
                                      JwtService jwtService,
-                                     SecurityMapper mapper,
+                                     TwoFactorAuthenticationService twoFactorAuthenticationService, SecurityMapper mapper,
                                      AuthenticationManager authenticationManager,
                                      PasswordEncoder passwordEncoder
                                     ) {
         this.userService = userService;
         this.jwtService = jwtService;
+        this.twoFactorAuthenticationService = twoFactorAuthenticationService;
         this.mapper = mapper;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public User createUser(User user) {
-        User createUser = user.toBuilder()
-                              .password(passwordEncoder.encode(user.getPassword()))
-                              .build();
-
-        return userService.createUser(createUser);
-
+    @Transactional
+    public Pair<User, String> createUser(@NotNull @Valid User user) {
+        String secretKey = twoFactorAuthenticationService.generateSecret().getBase32Encoded();
+        String twoFactorQrCode = Optional.of(user)
+                                         .map(User::getSecurity)
+                                         .filter(User.Security::isTwoFactorEnabled)
+                                         .map(it -> twoFactorAuthenticationService.generateQRCodeImage(secretKey))
+                                         .orElse(StringUtils.EMPTY);
+        String password = Optional.of(user).map(User::getSecurity).map(User.Security::getPassword).orElseThrow();
+        User createUser = user.initializeSecurity(
+                passwordEncoder.encode(password), secretKey);
+        return Pair.of(userService.createUser(createUser), twoFactorQrCode);
     }
 
     @Override

@@ -6,6 +6,7 @@ import dev.shade.model.UserAuthenticatedResponseApiBean;
 import dev.shade.model.UserCreationRequestApiBean;
 import dev.shade.service.ApiAuthMapper;
 import dev.shade.service.AuthenticationService;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,13 +27,13 @@ public class AuthRestController implements AuthApi {
     }
 
     @Override
-    public ResponseEntity<Void> createUser(UserCreationRequestApiBean userCreationRequestApiBean) {
-        User user = authenticationService.createUser(mapper.mapToUser(userCreationRequestApiBean));
+    public ResponseEntity<String> createUser(UserCreationRequestApiBean userCreationRequestApiBean) {
+        Pair<User, String> user = authenticationService.createUser(mapper.mapToUser(userCreationRequestApiBean));
         return ResponseEntity.created(UriComponentsBuilder
-                                              .fromUriString("/api/v1/users/" + user.getId())
-                                              .buildAndExpand(user.getId())
+                                              .fromUriString("/api/v1/users/" + user.getLeft().getId())
+                                              .buildAndExpand(user.getLeft().getId())
                                               .toUri())
-                             .build();
+                             .body(user.getRight());
     }
 
     @Override

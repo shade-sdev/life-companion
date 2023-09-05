@@ -15,13 +15,34 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <io.swagger.core.v3.version>2.2.15</io.swagger.core.v3.version>
+        <com.auth0.version>4.4.0</com.auth0.version>
+        <com.atlassian.onetime.version>2.0.2</com.atlassian.onetime.version>
+        <com.google.zxing.version>3.5.2</com.google.zxing.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>4.4.0</version>
+            <version>${com.auth0.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian</groupId>
+            <artifactId>onetime</artifactId>
+            <version>${com.atlassian.onetime.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${com.google.zxing.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${com.google.zxing.version}</version>
         </dependency>
 
         <dependency>

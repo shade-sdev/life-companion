@@ -123,6 +123,15 @@ databaseChangeLog:
                   name: is_account_non_locked
                   type: BOOLEAN
               - column:
+                  constraints:
+                    nullable: false
+                  name: is_two_factor_enabled
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+              - column:
+                  name: two_factor_secret_key
+                  type: VARCHAR(32)
+              - column:
                   name: created_by
                   type: VARCHAR(255)
               - column:

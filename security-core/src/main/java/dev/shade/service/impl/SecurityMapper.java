@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface SecurityMapper {
 
-    @Mapping(target = "isAccountNonLocked", source = "accountNonLocked")
+    @Mapping(target = "password", source = "security.password")
+    @Mapping(target = "isAccountNonLocked", source = "security.accountNonLocked")
     UserPrincipal mapToUserPrincipal(User user);
 
     default UserPrincipal.Role mapToUserPrincipalRole(Role role) {

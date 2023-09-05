@@ -1,4 +1,4 @@
-package dev.shade.config;
+package dev.shade.config.jwt;
 
 import dev.shade.model.SecurityProblemDetail;
 import jakarta.servlet.FilterChain;

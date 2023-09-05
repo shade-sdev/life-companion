@@ -4,11 +4,13 @@ import dev.shade.infrastructure.repository.Auditable;
 import dev.shade.infrastructure.repository.authority.RoleJpaEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
@@ -40,10 +42,28 @@ public class UserJpaEntity extends Auditable {
     @JoinColumn(name = "role_id")
     private RoleJpaEntity role;
 
-    @Column(name = "password")
-    private String password;
+    @Embedded
+    private Security security;
 
-    @Column(name = "is_account_non_locked")
-    private boolean isAccountNonLocked;
+    @Embeddable
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder(toBuilder = true)
+    @Getter
+    public static class Security implements Serializable {
+
+        @Column(name = "password")
+        private String password;
+
+        @Column(name = "is_account_non_locked")
+        private boolean isAccountNonLocked;
+
+        @Column(name = "is_two_factor_enabled")
+        private boolean isTwoFactorEnabled;
+
+        @Column(name = "two_factor_secret_key")
+        private String twoFactorSecretKey;
+
+    }
 
 }

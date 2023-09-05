@@ -14,12 +14,13 @@ public interface JpaUserMapper {
     @Mapping(target = "lastModifiedBy", source = "audit.lastModifiedBy")
     @Mapping(target = "createdDate", source = "audit.createdDate")
     @Mapping(target = "lastModifiedDate", source = "audit.lastModifiedDate")
-    @Mapping(target = "isAccountNonLocked", source = "accountNonLocked")
+    @Mapping(target = "security.isAccountNonLocked", source = "security.accountNonLocked")
+    @Mapping(target = "security.isTwoFactorEnabled", source = "security.twoFactorEnabled")
     UserJpaEntity mapToEntity(User user);
 
-
-    @Mapping(target = "isAccountNonLocked", source = "accountNonLocked")
     @Mapping(target = "audit", source = ".")
+    @Mapping(target = "security.isAccountNonLocked", source = "security.accountNonLocked")
+    @Mapping(target = "security.isTwoFactorEnabled", source = "security.twoFactorEnabled")
     User mapToUser(UserJpaEntity userJpaEntity);
 
     default Auditable mapToAuditable(UserJpaEntity userJpaEntity) {
