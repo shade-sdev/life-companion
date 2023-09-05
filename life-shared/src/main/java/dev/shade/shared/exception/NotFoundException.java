@@ -20,14 +20,14 @@ public class NotFoundException extends RuntimeException {
         this.code = ErrorCode.NOT_FOUND.getCode();
     }
 
-    public NotFoundException(Class<?> clasz) {
-        super(String.format("%s not found", clasz.getSimpleName()));
-        this.code = String.format("%s_%s", clasz.getSimpleName().toUpperCase(), ErrorCode.NOT_FOUND.getCode());
+    public NotFoundException(Class<?> clazz) {
+        super(String.format("%s not found", clazz.getSimpleName()));
+        this.code = String.format("%s_%s", clazz.getSimpleName().toUpperCase(), ErrorCode.NOT_FOUND.getCode());
     }
 
-    public NotFoundException(UUID id, Class<?> clasz) {
-        super(String.format("%s (id = %s) not found", clasz.getSimpleName(), id));
-        this.code = String.format("%s_%s", clasz.getSimpleName().toUpperCase(), ErrorCode.NOT_FOUND.getCode());
+    public NotFoundException(UUID id, Class<?> clazz) {
+        super(String.format("%s (id = %s) not found", clazz.getSimpleName(), id));
+        this.code = String.format("%s_%s", clazz.getSimpleName().toUpperCase(), ErrorCode.NOT_FOUND.getCode());
     }
 
 }
