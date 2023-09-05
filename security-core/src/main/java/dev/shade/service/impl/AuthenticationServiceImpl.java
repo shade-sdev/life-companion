@@ -1,5 +1,6 @@
 package dev.shade.service.impl;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.shade.config.JwtService;
 import dev.shade.domain.user.User;
 import dev.shade.model.UserAuthenticatedResponseApiBean;
@@ -11,8 +12,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+
+    private static final String BEARER = "Bearer ";
 
     private final UserService userService;
     private final JwtService jwtService;
@@ -27,7 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                                      SecurityMapper mapper,
                                      AuthenticationManager authenticationManager,
                                      PasswordEncoder passwordEncoder
-    ) {
+                                    ) {
         this.userService = userService;
         this.jwtService = jwtService;
         this.mapper = mapper;
@@ -48,17 +53,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public UserAuthenticatedResponseApiBean authenticateUser(String username, String password) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
+                new UsernamePasswordAuthenticationToken(username, password));
+
         return userService.findBy(username)
                           .map(mapper::mapToUserPrincipal)
-                          .map(jwtService::generateToken)
                           .map(it -> {
                               UserAuthenticatedResponseApiBean userResponse = new UserAuthenticatedResponseApiBean();
-                              userResponse.setToken(it);
+                              userResponse.setToken(jwtService.generateAccessToken(it, it.getAuthoritiesList()));
+                              userResponse.setRefreshToken(jwtService.generateRefreshToken(it));
                               return userResponse;
                           })
                           .orElseThrow();
+    }
+
+    @Override
+    public UserAuthenticatedResponseApiBean refreshUserToken(String authorization) {
+        final String token = Optional.ofNullable(authorization)
+                                     .filter(header -> header.startsWith(BEARER))
+                                     .map(header -> header.replace(BEARER, ""))
+                                     .orElse(null);
+
+        DecodedJWT decodedToken = jwtService.decode(token);
+
+        return Optional.ofNullable(decodedToken)
+                       .map(DecodedJWT::getSubject)
+                       .flatMap(userService::findBy)
+                       .map(mapper::mapToUserPrincipal)
+                       .map(it -> {
+                           UserAuthenticatedResponseApiBean userResponse = new UserAuthenticatedResponseApiBean();
+                           userResponse.setToken(jwtService.generateAccessToken(it, it.getAuthoritiesList()));
+                           userResponse.setRefreshToken(jwtService.generateRefreshToken(it));
+                           return userResponse;
+                       })
+                       .orElseThrow();
     }
 
 }

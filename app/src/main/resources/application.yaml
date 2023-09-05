@@ -38,5 +38,8 @@ logging:
 app:
   jwt:
     secret: d56d9e98eddf914b95d670cd4991afda46f943fb7d28fa64d6170fb45cf1ad11771ca8f7104b824809bccbfc834a39170a0fe14397f0bde8cbdb9e54cc3344f2
-    expiration: 604800000
+    access-token:
+      expiration: 86400000
+    refresh-token:
+      expiration: 604800000
 

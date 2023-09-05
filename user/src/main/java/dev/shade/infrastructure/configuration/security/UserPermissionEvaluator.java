@@ -1,33 +1,28 @@
 package dev.shade.infrastructure.configuration.security;
 
-import static dev.shade.shared.security.model.PermissionScope.MINE;
-import static dev.shade.shared.security.model.PermissionScope.OTHER;
-
-import java.io.Serializable;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
-
-import dev.shade.domain.repository.UserRepository;
 import dev.shade.domain.user.User;
 import dev.shade.shared.security.SecurityContextHelper;
 import dev.shade.shared.security.TargetedPermissionEvaluator;
 import dev.shade.shared.security.model.PermissionScope;
 import dev.shade.shared.security.model.RoleCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+import java.util.Optional;
+import java.util.UUID;
+
+import static dev.shade.shared.security.model.PermissionScope.MINE;
+import static dev.shade.shared.security.model.PermissionScope.OTHER;
 
 @Component
 public class UserPermissionEvaluator implements TargetedPermissionEvaluator {
 
-    private final UserRepository userRepository;
-
     private final SecurityContextHelper securityContextHelper;
 
     @Autowired
-    public UserPermissionEvaluator(UserRepository userRepository, SecurityContextHelper securityContextHelper) {
-        this.userRepository = userRepository;
+    public UserPermissionEvaluator(SecurityContextHelper securityContextHelper) {
         this.securityContextHelper = securityContextHelper;
     }
 
@@ -43,16 +38,18 @@ public class UserPermissionEvaluator implements TargetedPermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        Optional<User> user = userRepository.findById(UUID.fromString(targetId.toString()));
-        PermissionScope scope = user.map(it -> hasAccess(it, securityContextHelper.roleCode()))
-                                    .map(it -> Boolean.TRUE.equals(it) ? MINE : OTHER)
-                                    .orElse(OTHER);
+        PermissionScope scope = Optional.of(targetId.toString())
+                                        .map(UUID::fromString)
+                                        .map(it -> hasAccess(it, securityContextHelper.roleCode()))
+                                        .map(it -> Boolean.TRUE.equals(it) ? MINE : OTHER)
+                                        .orElse(OTHER);
+
         return securityContextHelper.resolvePermission(scope, String.valueOf(permission));
     }
 
-    private boolean hasAccess(User user, RoleCode code) {
+    private boolean hasAccess(UUID userId, RoleCode code) {
         return switch (code) {
-            case ROLE_USER -> user.getUserName().equals(securityContextHelper.username());
+            case ROLE_USER -> userId.equals(securityContextHelper.userId());
             case ROLE_ADMIN -> false;
         };
     }

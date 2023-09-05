@@ -7,15 +7,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Value
 @Builder
 public class UserPrincipal implements UserDetails {
+
+    UUID id;
 
     String userName;
 
@@ -54,6 +54,13 @@ public class UserPrincipal implements UserDetails {
 
                      .map(SimpleGrantedAuthority::new)
                      .collect(Collectors.toSet());
+    }
+
+    public List<String> getAuthoritiesList() {
+        return getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
     }
 
     @Override

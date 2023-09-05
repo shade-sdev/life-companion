@@ -8,7 +8,6 @@ import dev.shade.service.ApiAuthMapper;
 import dev.shade.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,15 +29,19 @@ public class AuthRestController implements AuthApi {
     public ResponseEntity<Void> createUser(UserCreationRequestApiBean userCreationRequestApiBean) {
         User user = authenticationService.createUser(mapper.mapToUser(userCreationRequestApiBean));
         return ResponseEntity.created(UriComponentsBuilder
-                                     .fromUriString("/api/v1/users/" + user.getId())
-                                     .buildAndExpand(user.getId())
-                                     .toUri())
+                                              .fromUriString("/api/v1/users/" + user.getId())
+                                              .buildAndExpand(user.getId())
+                                              .toUri())
                              .build();
     }
 
     @Override
-    public ResponseEntity<UserAuthenticatedResponseApiBean> authenticateUser(@RequestBody UserAuthRequestApiBean user) {
+    public ResponseEntity<UserAuthenticatedResponseApiBean> authenticateUser(UserAuthRequestApiBean user) {
         return ResponseEntity.ok(authenticationService.authenticateUser(user.getUserName(), user.getPassword()));
     }
 
+    @Override
+    public ResponseEntity<UserAuthenticatedResponseApiBean> refreshUserToken(String authorization) {
+        return ResponseEntity.ok(authenticationService.refreshUserToken(authorization));
+    }
 }

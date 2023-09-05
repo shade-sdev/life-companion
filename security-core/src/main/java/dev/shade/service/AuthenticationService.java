@@ -7,4 +7,6 @@ public interface AuthenticationService {
     User createUser(User user);
 
     UserAuthenticatedResponseApiBean authenticateUser(String username, String password);
+
+    UserAuthenticatedResponseApiBean refreshUserToken(String authorization);
 }

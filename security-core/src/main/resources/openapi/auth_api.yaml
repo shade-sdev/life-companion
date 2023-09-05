@@ -22,7 +22,7 @@ paths:
         '200':
           description: Successful Operation
 
-  /auth/login:
+  /auth/access-token:
     post:
       operationId: authenticateUser
       summary: Authenticate a user
@@ -30,6 +30,22 @@ paths:
         - auth
       requestBody:
         $ref: '#/components/requestBodies/UserAuthenticationRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserAuthenticatedResponseBody'
+
+  /auth/refresh-token:
+    get:
+      operationId: refreshUserToken
+      summary: Refreshes the access token
+      tags:
+        - auth
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+          required: true
       responses:
         '200':
           $ref: '#/components/responses/UserAuthenticatedResponseBody'

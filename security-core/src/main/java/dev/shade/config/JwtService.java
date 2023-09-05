@@ -6,10 +6,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.shade.shared.security.model.UserPrincipal;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class JwtService {
@@ -20,33 +20,41 @@ public class JwtService {
     @Value("${app.jwt.secret}")
     private String secretKey;
 
-    @Value("${app.jwt.expiration}")
-    private long validityInMilliseconds;
+    @Value("${app.jwt.access-token.expiration}")
+    private long accessTokenExpiration;
+
+    @Value("${app.jwt.refresh-token.expiration}")
+    private long refreshTokenExpiration;
 
     public String username(String token) {
         DecodedJWT jwt = decode(token);
         return jwt.getSubject();
     }
 
-    public String generateToken(UserPrincipal userPrincipal) {
-        return JWT.create()
-                  .withIssuer(ISSUER)
-                  .withSubject(userPrincipal.getUsername())
-                  .withArrayClaim(AUTHORITIES, userPrincipal.getAuthorities()
-                                                              .stream()
-                                                              .map(GrantedAuthority::getAuthority)
-                                                              .toArray(String[]::new))
-                  .withIssuedAt(new Date(System.currentTimeMillis()))
-                  .withExpiresAt(new Date(System.currentTimeMillis() + validityInMilliseconds))
-                  .sign(Algorithm.HMAC512(secretKey));
+    public String generateAccessToken(UserPrincipal userPrincipal, List<String> authorities) {
+        return generateToken(userPrincipal, authorities, accessTokenExpiration);
     }
 
-    private DecodedJWT decode(String token) {
+    public String generateRefreshToken(UserPrincipal userPrincipal) {
+        return generateToken(userPrincipal, List.of(), refreshTokenExpiration);
+    }
+
+    public DecodedJWT decode(String token) {
         Algorithm algorithm = Algorithm.HMAC512(secretKey);
         JWTVerifier verifier = JWT.require(algorithm)
                                   .withIssuer(ISSUER)
                                   .build();
         return verifier.verify(token);
+    }
+
+    private String generateToken(UserPrincipal userPrincipal, List<String> authorities, long expiration) {
+        return JWT.create()
+                  .withIssuer(ISSUER)
+                  .withSubject(userPrincipal.getUsername())
+                  .withClaim(AUTHORITIES, authorities)
+                  .withIssuedAt(new Date(System.currentTimeMillis()))
+                  .withExpiresAt(new Date(System.currentTimeMillis() + expiration))
+                  .sign(Algorithm.HMAC512(secretKey));
     }
 
 }

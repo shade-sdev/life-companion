@@ -4,8 +4,11 @@ import dev.shade.shared.security.model.PermissionScope;
 import dev.shade.shared.security.model.RoleCode;
 
 import java.util.Set;
+import java.util.UUID;
 
 public interface SecurityContextHelper {
+
+    UUID userId();
 
     String username();
 
