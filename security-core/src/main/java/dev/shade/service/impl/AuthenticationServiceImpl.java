@@ -67,7 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (Boolean.TRUE.equals(isTwoFactorEnabled)) {
             String secretKey = twoFactorAuthenticationService.generateSecret().getBase32Encoded();
-            String twoFactorQrCode = twoFactorAuthenticationService.generateQRCodeImage(secretKey);
+            String twoFactorQrCode = twoFactorAuthenticationService.generateQRCodeImage(secretKey, user.getEmail());
             User createUser = user.initializeSecurity(passwordEncoder.encode(password), secretKey);
             return Pair.of(userService.createUser(createUser), twoFactorQrCode);
         }

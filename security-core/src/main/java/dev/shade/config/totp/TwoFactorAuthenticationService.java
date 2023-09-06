@@ -36,8 +36,6 @@ public class TwoFactorAuthenticationService {
 
     private static final String ISSUER = "Life Companion";
 
-    private static final String EMAIL = "noreply@lifecompanion.com";
-
     private static final TOTPService TOTP_SERVICE = new DefaultTOTPService();
 
     public TOTPSecret generateSecret() {
@@ -66,9 +64,9 @@ public class TwoFactorAuthenticationService {
         }
     }
 
-    public String generateQRCodeImage(String secretKey) {
+    public String generateQRCodeImage(String secretKey, String email) {
         TOTPSecret totpSecret = TOTPSecret.Companion.fromBase32EncodedString(secretKey);
-        String otpAuthUri = this.generateQRCodeURI(totpSecret).toString();
+        String otpAuthUri = this.generateQRCodeURI(totpSecret, new EmailAddress(email)).toString();
 
         int width = 300;
         int height = 300;
@@ -90,9 +88,9 @@ public class TwoFactorAuthenticationService {
         return DATA_URL;
     }
 
-    private URI generateQRCodeURI(TOTPSecret secret) {
+    private URI generateQRCodeURI(TOTPSecret secret, EmailAddress emailAddress) {
         return TOTP_SERVICE.generateTOTPUrl(secret,
-                                            new EmailAddress(EMAIL),
+                                            emailAddress,
                                             new Issuer(ISSUER));
     }
 
