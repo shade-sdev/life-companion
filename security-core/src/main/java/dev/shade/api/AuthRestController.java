@@ -38,7 +38,7 @@ public class AuthRestController implements AuthApi {
 
     @Override
     public ResponseEntity<UserAuthenticatedResponseApiBean> authenticateUser(UserAuthRequestApiBean user) {
-        return ResponseEntity.ok(authenticationService.authenticateUser(user.getUserName(), user.getPassword()));
+        return ResponseEntity.ok(authenticationService.authenticateUser(mapper.mapToUserAuthenticationRequest(user)));
     }
 
     @Override

@@ -1,10 +1,12 @@
 package dev.shade.config.totp;
 
+import com.atlassian.onetime.core.TOTP;
 import com.atlassian.onetime.model.EmailAddress;
 import com.atlassian.onetime.model.Issuer;
 import com.atlassian.onetime.model.TOTPSecret;
 import com.atlassian.onetime.service.DefaultTOTPService;
 import com.atlassian.onetime.service.TOTPService;
+import com.atlassian.onetime.service.TOTPVerificationResult;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Writer;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
@@ -13,6 +15,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -36,6 +39,16 @@ public class TwoFactorAuthenticationService {
 
     public TOTPSecret generateSecret() {
         return TOTPSecret.Companion.fromBase32EncodedString(generateBase32String());
+    }
+
+    public void verify(String code, String secret) {
+        TOTP totpCode = new TOTP(code);
+        TOTPSecret totpSecret = TOTPSecret.Companion.fromBase32EncodedString(secret);
+        TOTPVerificationResult verify = TOTP_SERVICE.verify(totpCode, totpSecret);
+
+        if (verify.isFailure()) {
+            throw new AccessDeniedException("Access Denied");
+        }
     }
 
     public String generateQRCodeImage(String secretKey) {

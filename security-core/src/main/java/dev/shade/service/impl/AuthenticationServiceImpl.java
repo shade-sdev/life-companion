@@ -6,6 +6,7 @@ import dev.shade.config.totp.TwoFactorAuthenticationService;
 import dev.shade.domain.user.User;
 import dev.shade.model.UserAuthenticatedResponseApiBean;
 import dev.shade.service.AuthenticationService;
+import dev.shade.service.model.UserAuthenticationRequest;
 import dev.shade.service.user.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -18,10 +19,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Optional;
 
 @Service
+@Validated
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
 
@@ -53,24 +56,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public Pair<User, String> createUser(@NotNull @Valid User user) {
-        String secretKey = twoFactorAuthenticationService.generateSecret().getBase32Encoded();
-        String twoFactorQrCode = Optional.of(user)
-                                         .map(User::getSecurity)
-                                         .filter(User.Security::isTwoFactorEnabled)
-                                         .map(it -> twoFactorAuthenticationService.generateQRCodeImage(secretKey))
-                                         .orElse(StringUtils.EMPTY);
-        String password = Optional.of(user).map(User::getSecurity).map(User.Security::getPassword).orElseThrow();
-        User createUser = user.initializeSecurity(
-                passwordEncoder.encode(password), secretKey);
-        return Pair.of(userService.createUser(createUser), twoFactorQrCode);
+        Boolean isTwoFactorEnabled = Optional.of(user)
+                                             .map(User::getSecurity)
+                                             .map(User.Security::isTwoFactorEnabled)
+                                             .orElse(false);
+
+        String password = Optional.of(user).map(User::getSecurity)
+                                  .map(User.Security::getPassword)
+                                  .orElseThrow();
+
+        if (Boolean.TRUE.equals(isTwoFactorEnabled)) {
+            String secretKey = twoFactorAuthenticationService.generateSecret().getBase32Encoded();
+            String twoFactorQrCode = twoFactorAuthenticationService.generateQRCodeImage(secretKey);
+            User createUser = user.initializeSecurity(passwordEncoder.encode(password), secretKey);
+            return Pair.of(userService.createUser(createUser), twoFactorQrCode);
+        }
+
+        User createUser = user.initializeSecurity(passwordEncoder.encode(password), null);
+        return Pair.of(userService.createUser(createUser), StringUtils.EMPTY);
     }
 
     @Override
-    public UserAuthenticatedResponseApiBean authenticateUser(String username, String password) {
+    public UserAuthenticatedResponseApiBean authenticateUser(UserAuthenticationRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password));
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-        return userService.findBy(username)
+
+        return userService.findBy(request.getPassword())
                           .map(mapper::mapToUserPrincipal)
                           .map(it -> {
                               UserAuthenticatedResponseApiBean userResponse = new UserAuthenticatedResponseApiBean();
