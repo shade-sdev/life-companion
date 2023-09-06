@@ -1,8 +1,7 @@
 package dev.shade.service.model;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
 
@@ -16,7 +15,6 @@ public class UserAuthenticationRequest {
     @NotNull
     String password;
 
-    @Min(6)
-    @Max(6)
-    Integer code;
+    @Size(min = 6, max = 6)
+    String code;
 }

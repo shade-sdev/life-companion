@@ -13,7 +13,9 @@ import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import dev.shade.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.security.SecureRandom;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -41,13 +44,25 @@ public class TwoFactorAuthenticationService {
         return TOTPSecret.Companion.fromBase32EncodedString(generateBase32String());
     }
 
-    public void verify(String code, String secret) {
+    public void verify(Optional<User> user, String code) {
+        boolean isTrustFactorEnabled = user.map(User::getSecurity)
+                                           .map(User.Security::isTwoFactorEnabled)
+                                           .orElse(false);
+
+        if (!isTrustFactorEnabled) {
+            return;
+        }
+
+        String secret = user.map(User::getSecurity)
+                            .map(User.Security::getTwoFactorSecretKey)
+                            .orElse(StringUtils.EMPTY);
+
         TOTP totpCode = new TOTP(code);
         TOTPSecret totpSecret = TOTPSecret.Companion.fromBase32EncodedString(secret);
         TOTPVerificationResult verify = TOTP_SERVICE.verify(totpCode, totpSecret);
 
         if (verify.isFailure()) {
-            throw new AccessDeniedException("Access Denied");
+            throw new AccessDeniedException("2FA code invalid");
         }
     }
 
@@ -75,7 +90,7 @@ public class TwoFactorAuthenticationService {
         return DATA_URL;
     }
 
-    public URI generateQRCodeURI(TOTPSecret secret) {
+    private URI generateQRCodeURI(TOTPSecret secret) {
         return TOTP_SERVICE.generateTOTPUrl(secret,
                                             new EmailAddress(EMAIL),
                                             new Issuer(ISSUER));

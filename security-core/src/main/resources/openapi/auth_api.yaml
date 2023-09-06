@@ -76,7 +76,7 @@ components:
         password:
           type: string
         code:
-          type: integer
+          type: string
 
     UserAuthenticatedResponseApiBean:
       type: object

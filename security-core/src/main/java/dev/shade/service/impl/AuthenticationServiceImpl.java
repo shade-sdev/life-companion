@@ -77,20 +77,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public UserAuthenticatedResponseApiBean authenticateUser(UserAuthenticationRequest request) {
+    public UserAuthenticatedResponseApiBean authenticateUser(@NotNull @Valid UserAuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
+        Optional<User> user = userService.findBy(request.getUsername());
+        twoFactorAuthenticationService.verify(user, request.getCode());
 
-        return userService.findBy(request.getPassword())
-                          .map(mapper::mapToUserPrincipal)
-                          .map(it -> {
-                              UserAuthenticatedResponseApiBean userResponse = new UserAuthenticatedResponseApiBean();
-                              userResponse.setToken(jwtService.generateAccessToken(it, it.getAuthoritiesList()));
-                              userResponse.setRefreshToken(jwtService.generateRefreshToken(it));
-                              return userResponse;
-                          })
-                          .orElseThrow();
+        return user.map(mapper::mapToUserPrincipal)
+                   .map(it -> {
+                       UserAuthenticatedResponseApiBean userResponse = new UserAuthenticatedResponseApiBean();
+                       userResponse.setToken(jwtService.generateAccessToken(it, it.getAuthoritiesList()));
+                       userResponse.setRefreshToken(jwtService.generateRefreshToken(it));
+                       return userResponse;
+                   })
+                   .orElseThrow();
     }
 
     @Override
