@@ -87,7 +87,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return user.map(mapper::mapToUserPrincipal)
                    .map(it -> {
                        UserAuthenticatedResponseApiBean userResponse = new UserAuthenticatedResponseApiBean();
-                       userResponse.setToken(jwtService.generateAccessToken(it, it.getAuthoritiesList()));
+                       userResponse.setAccessToken(jwtService.generateAccessToken(it, it.getAuthoritiesList()));
                        userResponse.setRefreshToken(jwtService.generateRefreshToken(it));
                        return userResponse;
                    })
@@ -109,7 +109,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                        .map(mapper::mapToUserPrincipal)
                        .map(it -> {
                            UserAuthenticatedResponseApiBean userResponse = new UserAuthenticatedResponseApiBean();
-                           userResponse.setToken(jwtService.generateAccessToken(it, it.getAuthoritiesList()));
+                           userResponse.setAccessToken(jwtService.generateAccessToken(it, it.getAuthoritiesList()));
                            userResponse.setRefreshToken(jwtService.generateRefreshToken(it));
                            return userResponse;
                        })
