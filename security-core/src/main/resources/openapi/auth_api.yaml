@@ -86,6 +86,12 @@ components:
         refresh_token:
           type: string
 
+    TwoFactorResponseApiBean:
+      type: object
+      properties:
+        imageBase64:
+          type: string
+
   requestBodies:
     UserCreationRequestBody:
       description: A Json object containing user information
@@ -114,4 +120,4 @@ components:
       content:
         application/json:
           schema:
-            type: string
+            $ref: '#/components/schemas/TwoFactorResponseApiBean'

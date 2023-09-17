@@ -33,7 +33,8 @@ spring:
 logging:
   level:
     com.atomikos: DEBUG
-    org.springframework.cache: trace
+    org.springframework.cache: TRACE
+    org.springframework.web.cors: TRACE
 
 app:
   jwt:

@@ -1,6 +1,7 @@
 package dev.shade.api;
 
 import dev.shade.domain.user.User;
+import dev.shade.model.TwoFactorResponseApiBean;
 import dev.shade.model.UserAuthRequestApiBean;
 import dev.shade.model.UserAuthenticatedResponseApiBean;
 import dev.shade.model.UserCreationRequestApiBean;
@@ -27,13 +28,13 @@ public class AuthRestController implements AuthApi {
     }
 
     @Override
-    public ResponseEntity<String> createUser(UserCreationRequestApiBean userCreationRequestApiBean) {
+    public ResponseEntity<TwoFactorResponseApiBean> createUser(UserCreationRequestApiBean userCreationRequestApiBean) {
         Pair<User, String> user = authenticationService.createUser(mapper.mapToUser(userCreationRequestApiBean));
         return ResponseEntity.created(UriComponentsBuilder
                                               .fromUriString("/api/v1/users/" + user.getLeft().getId())
                                               .buildAndExpand(user.getLeft().getId())
                                               .toUri())
-                             .body(user.getRight());
+                             .body(new TwoFactorResponseApiBean().imageBase64(user.getRight()));
     }
 
     @Override
