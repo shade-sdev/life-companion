@@ -16,6 +16,7 @@ public class JwtService {
 
     private static final String ISSUER = "life-companion";
     private static final String AUTHORITIES = "authorities";
+    private static final String EMAIL = "email";
 
     @Value("${app.jwt.secret}")
     private String secretKey;
@@ -51,6 +52,7 @@ public class JwtService {
         return JWT.create()
                   .withIssuer(ISSUER)
                   .withSubject(userPrincipal.getUsername())
+                  .withClaim(EMAIL, userPrincipal.getEmail())
                   .withClaim(AUTHORITIES, authorities)
                   .withIssuedAt(new Date(System.currentTimeMillis()))
                   .withExpiresAt(new Date(System.currentTimeMillis() + expiration))
