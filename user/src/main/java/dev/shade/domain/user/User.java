@@ -53,6 +53,7 @@ public class User extends DomainValidator<User> implements Serializable {
 
     @Value
     @Builder(toBuilder = true)
+    @Valid
     public static class Security implements Serializable {
 
         @NotNull
