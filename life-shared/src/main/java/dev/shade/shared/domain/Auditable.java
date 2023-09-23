@@ -1,4 +1,4 @@
-package dev.shade.domain;
+package dev.shade.shared.domain;
 
 import lombok.Builder;
 import lombok.Value;

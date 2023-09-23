@@ -1,4 +1,4 @@
-package dev.shade.domain;
+package dev.shade.shared.domain;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
