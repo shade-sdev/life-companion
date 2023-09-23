@@ -6,7 +6,6 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.lang.NonNull;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -22,11 +21,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ProblemDetail handleNotFoundException(NotFoundException ex) {
         return new GlobalProblemDetail(ex.getCode(), ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ProblemDetail handleAccessDeniedException(AccessDeniedException ex) {
-        return new GlobalProblemDetail("ACCESS_DENIED", ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
