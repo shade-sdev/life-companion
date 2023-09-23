@@ -21,10 +21,6 @@ public class UserPrincipal implements UserDetails {
 
     String password;
 
-    String firstName;
-
-    String lastName;
-
     String email;
 
     Role role;

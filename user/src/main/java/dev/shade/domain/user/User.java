@@ -30,10 +30,6 @@ public class User extends DomainValidator<User> implements Serializable {
     @NotNull
     String userName;
 
-    String firstName;
-
-    String lastName;
-
     @NotNull
     @Email
     String email;
@@ -105,8 +101,6 @@ public class User extends DomainValidator<User> implements Serializable {
 
     public User update(UserUpdate updatedUser, String updatedBy) {
         return this.toBuilder()
-                   .firstName(updatedUser.getFirstName())
-                   .lastName(updatedUser.getLastName())
                    .email(updatedUser.getEmail())
                    .audit(this.getAudit().toBuilder()
                               .lastModifiedBy(updatedBy)

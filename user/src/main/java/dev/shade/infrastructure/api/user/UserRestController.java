@@ -32,8 +32,6 @@ public class UserRestController implements UsersApi {
     @Override
     public ResponseEntity<Void> updateUser(UUID userId, UserUpdateRequestApiBean userUpdateRequestApiBean) {
         userService.updateUser(userId, UserUpdate.builder()
-                                                 .firstName(userUpdateRequestApiBean.getFirstName())
-                                                 .lastName(userUpdateRequestApiBean.getLastName())
                                                  .email(userUpdateRequestApiBean.getEmail())
                                                  .build());
         return ResponseEntity.ok().build();

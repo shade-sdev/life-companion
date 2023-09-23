@@ -30,6 +30,7 @@
         <module>user</module>
         <module>security-core</module>
         <module>life-shared</module>
+        <module>person</module>
     </modules>
 
     <dependencies>

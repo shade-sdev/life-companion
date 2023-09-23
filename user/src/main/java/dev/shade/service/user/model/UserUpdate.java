@@ -8,9 +8,5 @@ import lombok.Value;
 @Builder
 public class UserUpdate {
 
-    String firstName;
-
-    String lastName;
-
     @NotNull String email;
 }
