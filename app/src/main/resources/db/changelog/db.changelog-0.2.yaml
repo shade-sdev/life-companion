@@ -18,6 +18,7 @@ databaseChangeLog:
                     foreignKeyName: fk_user_to_person
                     referencedColumnNames: id
                     referencedTableName: user
+                    nullable: false
                   name: user_id
                   type: uuid
               - column:
@@ -30,7 +31,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: identity_visibility
-                  type: boolean
+                  type: varchar(255)
               - column:
                   name: house_number
                   type: bigint
@@ -44,7 +45,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: address_visibility
-                  type: boolean
+                  type: varchar(255)
               - column:
                   constraints:
                     nullable: false
@@ -60,7 +61,13 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: contact_visibility
+                  type: varchar(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: initialized
                   type: boolean
+                  defaultValueBoolean: false
               - column:
                   name: created_by
                   type: varchar(255)

@@ -7,6 +7,8 @@ import dev.shade.domain.user.RoleType;
 import dev.shade.domain.user.User;
 import dev.shade.service.user.UserService;
 import dev.shade.service.user.model.UserUpdate;
+import dev.shade.shared.event.ActionType;
+import dev.shade.shared.event.user.UserEvent;
 import dev.shade.shared.exception.NotFoundException;
 import dev.shade.shared.security.SecurityContextHelper;
 import jakarta.validation.Valid;
@@ -27,17 +29,19 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final RoleRepository roleRepository;
 
+    private final UserEventPublisher publisher;
     private final SecurityContextHelper securityContextHelper;
     private final Validator validator;
 
     @Autowired
     public UserServiceImpl(UserRepository repository,
                            RoleRepository roleRepository,
-                           SecurityContextHelper securityContextHelper,
+                           UserEventPublisher publisher, SecurityContextHelper securityContextHelper,
                            Validator validator
     ) {
         this.repository = repository;
         this.roleRepository = roleRepository;
+        this.publisher = publisher;
         this.securityContextHelper = securityContextHelper;
         this.validator = validator;
     }
@@ -48,7 +52,13 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findBy(RoleType.ROLE_USER)
                                   .orElseThrow();
         User createdUser = user.initialize(role, "system");
-        return repository.save(createdUser.validate(validator));
+        User savedUser = repository.save(createdUser.validate(validator));
+        publisher.publish(UserEvent.builder()
+                                   .actionType(ActionType.CREATION)
+                                   .userId(savedUser.getId())
+
+                                   .build());
+        return savedUser;
     }
 
     @Override

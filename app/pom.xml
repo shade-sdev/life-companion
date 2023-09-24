@@ -30,7 +30,7 @@
 
         <dependency>
             <groupId>dev.shade</groupId>
-            <artifactId>person</artifactId>
+            <artifactId>life-relation</artifactId>
             <version>0.0.1</version>
         </dependency>
 

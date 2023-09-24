@@ -51,10 +51,26 @@ public class Person extends DomainValidator<Person> implements Serializable {
     Contact contact = Contact.builder().build();
 
     @Default
+    @Valid
     List<Relationship> relations = List.of();
 
     @Default
+    boolean initialized = false;
+
+    @Default
     Auditable auditable = Auditable.builder().build();
+
+    public static Person initFromUser(UUID userId, String email) {
+        return Person.builder()
+                     .userId(userId)
+                     .contact(Contact.builder()
+                                     .emailAddress(email)
+                                     .build())
+                     .auditable(Auditable.builder()
+                                         .createdBy("system")
+                                         .build())
+                     .build();
+    }
 
     @Value
     @Builder(toBuilder = true)

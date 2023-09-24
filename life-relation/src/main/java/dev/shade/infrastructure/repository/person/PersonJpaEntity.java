@@ -45,10 +45,13 @@ public class PersonJpaEntity extends Auditable implements Serializable {
     @JoinTable(
             name = "relationship",
             schema = "public",
-            joinColumns = @JoinColumn(name = "first_person_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "second_person_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "first_person_id", referencedColumnName = "id", insertable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "second_person_id", referencedColumnName = "id", insertable = false, updatable = false)
     )
     private List<RelationshipJpaEntity> relations;
+
+    @Column(name = "initialized")
+    private boolean initialized;
 
     @Embeddable
     @AllArgsConstructor

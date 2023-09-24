@@ -1,4 +1,4 @@
-package dev.shade.infrastructure.configuration;
+package dev.shade;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.EnableCaching;
@@ -15,5 +15,5 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaAuditing
 @EnableTransactionManagement
 @EnableCaching
-public class UserModuleConfig {
+public class ModuleConfig {
 }
