@@ -1,4 +1,4 @@
-package dev.shade.domain.person;
+package dev.shade.domain.relation;
 
 import dev.shade.shared.domain.Auditable;
 import jakarta.validation.constraints.NotNull;
@@ -9,12 +9,27 @@ import lombok.Value;
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * <p>Represents a relationship between individuals. It includes information about the person's ID,
+ * the type of relationship, its activity status, and auditing details.</p>
+ *
+ * @author Shade
+ * @version 1.0
+ * @see RelationType
+ */
+
 @Value
 @Builder(toBuilder = true)
 public class Relationship implements Serializable {
 
+    @Default
+    UUID id = UUID.randomUUID();
+
     @NotNull
-    UUID personId;
+    UUID firstPersonId;
+
+    @NotNull
+    UUID secondPersonId;
 
     @Default
     @NotNull
@@ -25,4 +40,5 @@ public class Relationship implements Serializable {
 
     @Default
     Auditable auditable = Auditable.builder().build();
+
 }

@@ -1,0 +1,130 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.9
+      author: Shade
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_person
+                  name: id
+                  type: uuid
+              - column:
+                  constraints:
+                    foreignKeyName: fk_user_to_person
+                    referencedColumnNames: id
+                    referencedTableName: user
+                  name: user_id
+                  type: uuid
+              - column:
+                  name: first_name
+                  type: varchar(255)
+              - column:
+                  name: last_name
+                  type: varchar(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: identity_visibility
+                  type: boolean
+              - column:
+                  name: house_number
+                  type: bigint
+              - column:
+                  name: street_name
+                  type: varchar(255)
+              - column:
+                  name: locality
+                  type: varchar(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: address_visibility
+                  type: boolean
+              - column:
+                  constraints:
+                    nullable: false
+                  name: email_address
+                  type: varchar(255)
+              - column:
+                  name: mobile_number
+                  type: int
+              - column:
+                  name: home_number
+                  type: int
+              - column:
+                  constraints:
+                    nullable: false
+                  name: contact_visibility
+                  type: boolean
+              - column:
+                  name: created_by
+                  type: varchar(255)
+              - column:
+                  name: created_date
+                  type: datetime
+              - column:
+                  name: last_modified_by
+                  type: varchar(255)
+              - column:
+                  name: last_modified_date
+                  type: datetime
+            tableName: person
+  - changeSet:
+      id: 0.10
+      author: Shade
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_relationship
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_first_person_to_relation
+                    referencedColumnNames: id
+                    referencedTableName: person
+                  name: first_person_id
+                  type: uuid
+              - column:
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_second_person_to_relation
+                    referencedColumnNames: id
+                    referencedTableName: person
+                  name: second_person_id
+                  type: uuid
+              - column:
+                  constraints:
+                    nullable: false
+                  name: relation_type
+                  type: varchar(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: active
+                  type: boolean
+                  defaultValueBoolean: false
+              - column:
+                  name: created_by
+                  type: varchar(255)
+              - column:
+                  name: created_date
+                  type: datetime
+              - column:
+                  name: last_modified_by
+                  type: varchar(255)
+              - column:
+                  name: last_modified_date
+                  type: datetime
+            tableName: relationship

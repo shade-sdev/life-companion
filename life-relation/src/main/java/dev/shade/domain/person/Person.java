@@ -1,5 +1,7 @@
 package dev.shade.domain.person;
 
+import dev.shade.domain.relation.RelationType;
+import dev.shade.domain.relation.Relationship;
 import dev.shade.shared.domain.Auditable;
 import dev.shade.shared.domain.DomainValidator;
 import jakarta.validation.Valid;
@@ -14,6 +16,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * <p>This class represents a person in a domain model. It contains information about the person's identity,
+ * address, contact details, and relationships. It also includes auditing information and a unique identifier.</p><br>
+ *
+ * @author Shade
+ * @version 1.0
+ */
 @Value
 @EqualsAndHashCode(callSuper = false)
 @Builder(toBuilder = true)
@@ -60,7 +69,7 @@ public class Person extends DomainValidator<Person> implements Serializable {
         String lastName;
 
         @Default
-        PersonDataVisibility identityVisibility = PersonDataVisibility.NONE;
+        RelationType identityVisibility = RelationType.NONE;
     }
 
     @Value
@@ -75,7 +84,7 @@ public class Person extends DomainValidator<Person> implements Serializable {
         Locality locality;
 
         @Default
-        PersonDataVisibility addressVisibility = PersonDataVisibility.NONE;
+        RelationType addressVisibility = RelationType.NONE;
     }
 
     @Value
@@ -96,7 +105,7 @@ public class Person extends DomainValidator<Person> implements Serializable {
         Integer homeNumber;
 
         @Default
-        PersonDataVisibility contactVisibility = PersonDataVisibility.NONE;
+        RelationType contactVisibility = RelationType.NONE;
     }
 
 }
