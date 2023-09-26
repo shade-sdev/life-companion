@@ -1,12 +1,12 @@
 package dev.shade.application.service.user.impl;
 
+import dev.shade.application.model.user.UserUpdate;
+import dev.shade.application.service.user.UserService;
 import dev.shade.domain.repository.RoleRepository;
 import dev.shade.domain.repository.UserRepository;
 import dev.shade.domain.user.Role;
 import dev.shade.domain.user.RoleType;
 import dev.shade.domain.user.User;
-import dev.shade.application.service.user.UserService;
-import dev.shade.application.model.user.UserUpdate;
 import dev.shade.shared.event.ActionType;
 import dev.shade.shared.event.user.UserEvent;
 import dev.shade.shared.exception.NotFoundException;
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         publisher.publish(UserEvent.builder()
                                    .actionType(ActionType.CREATION)
                                    .userId(savedUser.getId())
-
+                                   .email(savedUser.getEmail())
                                    .build());
         return savedUser;
     }

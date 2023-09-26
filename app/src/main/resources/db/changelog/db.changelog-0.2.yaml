@@ -18,6 +18,8 @@ databaseChangeLog:
                     foreignKeyName: fk_user_to_person
                     referencedColumnNames: id
                     referencedTableName: user
+                    unique: true
+                    uniqueConstraintName: uk_person_user_id
                     nullable: false
                   name: user_id
                   type: uuid
@@ -49,9 +51,14 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
+                    unique: true
+                    uniqueConstraintName: uk_person_email_address
                   name: email_address
                   type: varchar(255)
               - column:
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: uk_person_mobile_number
                   name: mobile_number
                   type: int
               - column:
