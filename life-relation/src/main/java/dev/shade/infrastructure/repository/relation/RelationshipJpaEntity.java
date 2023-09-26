@@ -1,6 +1,7 @@
 package dev.shade.infrastructure.repository.relation;
 
 import dev.shade.domain.relation.RelationType;
+import dev.shade.domain.relation.RelationshipStatus;
 import dev.shade.infrastructure.repository.Auditable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,17 +26,18 @@ public class RelationshipJpaEntity extends Auditable implements Serializable {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "first_person_id")
-    private UUID firstPersonId;
+    @Column(name = "requester_person_id")
+    private UUID requesterPersonId;
 
-    @Column(name = "second_person_id")
-    private UUID secondPersonId;
+    @Column(name = "receiver_person_id")
+    private UUID receiverPersonId;
 
     @Column(name = "relation_type")
     @Enumerated(EnumType.STRING)
     private RelationType relationType;
 
-    @Column(name = "active")
-    private boolean active;
+    @Column(name = "relationship_status")
+    @Enumerated(EnumType.STRING)
+    private RelationshipStatus status;
 
 }

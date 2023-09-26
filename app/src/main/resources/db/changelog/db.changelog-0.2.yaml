@@ -98,18 +98,18 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_first_person_to_relation
+                    foreignKeyName: fk_requester_person_to_relation
                     referencedColumnNames: id
                     referencedTableName: person
-                  name: first_person_id
+                  name: requester_person_id
                   type: uuid
               - column:
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_second_person_to_relation
+                    foreignKeyName: fk_receiver_person_to_relation
                     referencedColumnNames: id
                     referencedTableName: person
-                  name: second_person_id
+                  name: receiver_person_id
                   type: uuid
               - column:
                   constraints:
@@ -119,9 +119,8 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: active
-                  type: boolean
-                  defaultValueBoolean: false
+                  name: relationship_status
+                  type: varchar(255)
               - column:
                   name: created_by
                   type: varchar(255)
