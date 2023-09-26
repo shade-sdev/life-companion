@@ -1,6 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="LifeCompanionApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-    <option name="ACTIVE_PROFILES" value="native" />
+    <envs>
+      <env name="spring.profiles.active" value="dev"/>
+    </envs>
     <module name="app" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="dev.shade.LifeCompanionApplication" />
     <extension name="net.ashald.envfile">

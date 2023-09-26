@@ -1,8 +1,12 @@
 spring:
+
+  profiles:
+    active: @activatedProperties@
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/lifecompanion?currentSchema=public
-    username: postgres
-    password: admin
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?currentSchema=public
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -32,14 +36,14 @@ spring:
 
 logging:
   level:
-    com.atomikos: DEBUG
-    org.springframework.cache: TRACE
-    org.springframework.web.cors: TRACE
+    com.atomikos: ${ATOMIKOS_LOG:INFO}
+    org.springframework.cache: ${CACHE_LOG:INFO}
+    org.springframework.web.cors: ${CORS_LOG:INFO}
 
 app:
   jwt:
-    secret: d56d9e98eddf914b95d670cd4991afda46f943fb7d28fa64d6170fb45cf1ad11771ca8f7104b824809bccbfc834a39170a0fe14397f0bde8cbdb9e54cc3344f2
+    secret: ${JWT_SECRET}
     access-token:
-      expiration: 86400000
+      expiration: ${ACCESS_TOKEN_EXPIRATION}
     refresh-token:
-      expiration: 604800000
+      expiration: ${REFRESH_TOKEN_EXPIRATION}
