@@ -17,6 +17,12 @@ databaseChangeLog:
                   name: name
                   type: VARCHAR(255)
             tableName: permission
+        - createIndex:
+            indexName: idx_permission_name
+            tableName: permission
+            columns:
+              - column:
+                  name: name
   - changeSet:
       id: 0.2
       author: Shade (generated)
@@ -35,6 +41,12 @@ databaseChangeLog:
                   name: name
                   type: VARCHAR(255)
             tableName: role
+        - createIndex:
+            indexName: idx_role_name
+            tableName: role
+            columns:
+              - column:
+                  name: name
   - changeSet:
       id: 0.3
       author: Shade (generated)

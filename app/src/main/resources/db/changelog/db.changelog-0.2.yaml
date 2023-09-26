@@ -88,6 +88,18 @@ databaseChangeLog:
                   name: last_modified_date
                   type: datetime
             tableName: person
+        - createIndex:
+            indexName: idx_first_name
+            tableName: person
+            columns:
+              - column:
+                  name: first_name
+        - createIndex:
+            indexName: idx_last_name
+            tableName: person
+            columns:
+              - column:
+                  name: last_name
   - changeSet:
       id: 0.10
       author: Shade
@@ -141,3 +153,15 @@ databaseChangeLog:
                   name: last_modified_date
                   type: datetime
             tableName: relationship
+        - createIndex:
+            indexName: idx_relation_type
+            tableName: relationship
+            columns:
+              - column:
+                  name: relation_type
+        - createIndex:
+            indexName: idx_relationship_status
+            tableName: relationship
+            columns:
+              - column:
+                  name: relationship_status
