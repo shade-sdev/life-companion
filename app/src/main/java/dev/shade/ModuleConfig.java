@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan(basePackages = {"dev.shade.domain", "dev.shade.service", "dev.shade.infrastructure"})
+@ComponentScan(basePackages = {"dev.shade.domain", "dev.shade.application.service", "dev.shade.infrastructure"})
 @EnableJpaRepositories(basePackages = {"dev.shade.infrastructure"})
 @EntityScan("dev.shade.infrastructure.repository")
 @EnableJpaAuditing

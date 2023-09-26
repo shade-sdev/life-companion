@@ -56,7 +56,7 @@
                             <output>${project.build.directory}/generated-sources/</output>
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <apiPackage>dev.shade.infrastructure.api.user</apiPackage>
-                            <modelPackage>dev.shade.service.user.model</modelPackage>
+                            <modelPackage>dev.shade.application.model.user</modelPackage>
                             <generateSupportingFiles>true</generateSupportingFiles>
                             <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                             <configOptions>

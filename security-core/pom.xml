@@ -70,8 +70,8 @@
                             <generatorName>spring</generatorName>
                             <output>${project.build.directory}/generated-sources/</output>
                             <generateSupportingFiles>false</generateSupportingFiles>
-                            <apiPackage>dev.shade.api</apiPackage>
-                            <modelPackage>dev.shade.model</modelPackage>
+                            <apiPackage>dev.shade.infrastructure.api</apiPackage>
+                            <modelPackage>dev.shade.application.model.auth</modelPackage>
                             <generateSupportingFiles>true</generateSupportingFiles>
                             <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                             <configOptions>

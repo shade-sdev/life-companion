@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: Relation API
+  description: Relation API
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080/api/v1'
+tags:
+  - name: persons
+    description: Person api
+  - name: relationships
+    description: Relationship api
+
+paths:
+  /persons:
+    put:
+      operationId: updatePerson
+      summary: Updates a person
+      tags:
+        - persons
+      parameters:
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        $ref: '#/components/requestBodies/PersonUpdateRequestBody'
+      responses:
+        '200':
+          description: Successful Operation
+
+components:
+  schemas:
+    PersonUpdateRequestApiBean:
+      type: object
+      properties:
+        identity:
+          $ref: '#/components/schemas/PersonIdentityApiBean'
+        address:
+          $ref: '#/components/schemas/PersonAddressApiBean'
+        contact:
+          $ref: '#/components/schemas/PersonContactApiBean'
+
+    PersonIdentityApiBean:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        identityVisibility:
+          $ref: '#/components/schemas/PersonDataVisibility'
+
+    PersonAddressApiBean:
+      type: object
+      properties:
+        houseNumber:
+          type: integer
+          format: int64
+        streetName:
+          type: string
+        locality:
+          $ref: './locality.yaml#/components/schemas/LocalityEnum'
+        addressVisibility:
+          $ref: '#/components/schemas/PersonDataVisibility'
+
+    PersonContactApiBean:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+        mobileNumber:
+          type: integer
+          format: int32
+        homeNumber:
+          type: integer
+          format: int32
+        contactVisibility:
+          $ref: '#/components/schemas/PersonDataVisibility'
+
+    PersonDataVisibility:
+      type: string
+      enum: [STRANGER, FRIEND, FAMILY, NONE, ALL]
+
+  requestBodies:
+    PersonUpdateRequestBody:
+      description: A Json object containing person information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PersonUpdateRequestApiBean'

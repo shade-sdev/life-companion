@@ -1,9 +1,9 @@
 package dev.shade.infrastructure.api.user;
 
-import dev.shade.service.user.UserService;
-import dev.shade.service.user.model.UserApiBean;
-import dev.shade.service.user.model.UserUpdate;
-import dev.shade.service.user.model.UserUpdateRequestApiBean;
+import dev.shade.application.model.user.UserApiBean;
+import dev.shade.application.model.user.UserUpdateRequestApiBean;
+import dev.shade.application.service.user.UserService;
+import dev.shade.application.model.user.UserUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

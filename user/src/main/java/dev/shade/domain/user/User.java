@@ -1,7 +1,7 @@
 package dev.shade.domain.user;
 
 import dev.shade.domain.user.validation.ValidSecretKey;
-import dev.shade.service.user.model.UserUpdate;
+import dev.shade.application.model.user.UserUpdate;
 import dev.shade.shared.domain.Auditable;
 import dev.shade.shared.domain.DomainValidator;
 import jakarta.validation.Valid;

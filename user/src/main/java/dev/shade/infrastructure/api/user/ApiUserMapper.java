@@ -1,8 +1,8 @@
 package dev.shade.infrastructure.api.user;
 
+import dev.shade.application.model.user.UserApiBean;
+import dev.shade.application.model.user.UserUpdateRequestApiBean;
 import dev.shade.domain.user.User;
-import dev.shade.service.user.model.UserApiBean;
-import dev.shade.service.user.model.UserUpdateRequestApiBean;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
