@@ -6,28 +6,24 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-public class NotFoundException extends RuntimeException {
+public class NotFoundException extends LifeCompanionException {
 
-    private final String code;
+    private static final String DEFAULT_MESSAGE = "not found";
 
     public NotFoundException() {
-        super(ErrorCode.NOT_FOUND.getMessage());
-        this.code = ErrorCode.NOT_FOUND.getCode();
+        super(ErrorCode.NOT_FOUND.getMessage(), ErrorCode.NOT_FOUND);
     }
 
     public NotFoundException(String message) {
-        super(message);
-        this.code = ErrorCode.NOT_FOUND.getCode();
+        super(message, ErrorCode.NOT_FOUND);
     }
 
     public NotFoundException(Class<?> clazz) {
-        super(String.format("%s not found", clazz.getSimpleName()));
-        this.code = String.format("%s_%s", clazz.getSimpleName().toUpperCase(), ErrorCode.NOT_FOUND.getCode());
+        super(DEFAULT_MESSAGE, ErrorCode.NOT_FOUND, clazz);
     }
 
     public NotFoundException(UUID id, Class<?> clazz) {
-        super(String.format("%s (id = %s) not found", clazz.getSimpleName(), id));
-        this.code = String.format("%s_%s", clazz.getSimpleName().toUpperCase(), ErrorCode.NOT_FOUND.getCode());
+        super(DEFAULT_MESSAGE, ErrorCode.NOT_FOUND, id, clazz);
     }
 
 }

@@ -1,7 +1,6 @@
 package dev.shade.shared.exception.handler;
 
-import dev.shade.shared.exception.InvalidStateException;
-import dev.shade.shared.exception.NotFoundException;
+import dev.shade.shared.exception.LifeCompanionException;
 import dev.shade.shared.exception.model.GlobalProblemDetail;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,14 +18,9 @@ import java.util.Optional;
 
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
-    public ProblemDetail handleNotFoundException(NotFoundException ex) {
-        return new GlobalProblemDetail(ex.getCode(), ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(InvalidStateException.class)
-    public ProblemDetail handleInvalidStateException(InvalidStateException ex) {
-        return new GlobalProblemDetail(ex.getCode(), ex.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(LifeCompanionException.class)
+    public ProblemDetail handleLifeCompanionException(LifeCompanionException ex) {
+        return new GlobalProblemDetail(ex.getCode(), ex.getMessage(), ex.getErrorCode().getStatus());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
