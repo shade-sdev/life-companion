@@ -1,0 +1,15 @@
+INSERT INTO permission (id, name)
+VALUES ('989004c5-2fe4-482e-a62d-ed69e21a667c', 'PERSON_MINE_READ'),
+       ('dc54db4c-5d63-11ee-8c99-0242ac120002', 'PERSON_OTHER_READ'),
+       ('8dd9c7d4-5d63-11ee-8c99-0242ac120002', 'PERSON_MINE_UPDATE'),
+       ('35e6b8ae-5d61-11ee-8c99-0242ac120002', 'PERSON_OTHER_MANAGEMENT'),
+       ('636196aa-5d61-11ee-8c99-0242ac120002', 'RELATIONSHIP_MINE_MANAGEMENT'),
+       ('7bbb295a-5d61-11ee-8c99-0242ac120002', 'RELATIONSHIP_OTHER_MANAGEMENT');
+
+INSERT INTO role_permission (role_id, permission_id)
+VALUES ('6e27aa40-ae4e-42c0-81a4-869560b59968', '989004c5-2fe4-482e-a62d-ed69e21a667c'),
+       ('6e27aa40-ae4e-42c0-81a4-869560b59968', 'dc54db4c-5d63-11ee-8c99-0242ac120002'),
+       ('6e27aa40-ae4e-42c0-81a4-869560b59968', '8dd9c7d4-5d63-11ee-8c99-0242ac120002'),
+       ('c733fdec-4c9f-4ae4-8266-c073dc7d3127', '35e6b8ae-5d61-11ee-8c99-0242ac120002'),
+       ('6e27aa40-ae4e-42c0-81a4-869560b59968', '636196aa-5d61-11ee-8c99-0242ac120002'),
+       ('c733fdec-4c9f-4ae4-8266-c073dc7d3127', '7bbb295a-5d61-11ee-8c99-0242ac120002');

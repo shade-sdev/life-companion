@@ -165,3 +165,9 @@ databaseChangeLog:
             columns:
               - column:
                   name: relationship_status
+  - changeSet:
+      id: 0.11
+      author: Shade
+      changes:
+        - sqlFile:
+            path: "db/changelog/sql/add_person_relationship_permissions.sql"

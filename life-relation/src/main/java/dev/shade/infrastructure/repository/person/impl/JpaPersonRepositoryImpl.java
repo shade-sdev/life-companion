@@ -28,6 +28,16 @@ public class JpaPersonRepositoryImpl implements PersonRepository {
     }
 
     @Override
+    public Optional<UUID> findPersonIdByUserId(UUID userId) {
+        return repository.findPersonIdByUserId(userId);
+    }
+
+    @Override
+    public Optional<Person> findByUserId(UUID userId) {
+        return repository.findPersonJpaEntityByUserId(userId).map(mapper::mapToPerson);
+    }
+
+    @Override
     public Person save(Person person) {
         return mapper.mapToPerson(repository.save(mapper.mapToEntity(person)));
     }

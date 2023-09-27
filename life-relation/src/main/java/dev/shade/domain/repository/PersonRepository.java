@@ -9,5 +9,9 @@ public interface PersonRepository {
 
     Optional<Person> findById(UUID personId);
 
+    Optional<UUID> findPersonIdByUserId(UUID userId);
+
+    Optional<Person> findByUserId(UUID userId);
+
     Person save(Person person);
 }

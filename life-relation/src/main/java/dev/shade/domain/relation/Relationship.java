@@ -43,8 +43,8 @@ public class Relationship implements Serializable {
     @Default
     Auditable auditable = Auditable.builder().build();
 
-    public Relationship initializeRequest() {
-        if (Objects.nonNull(this.getStatus())) {
+    public Relationship initializeRequest(UUID requesterPersonId) {
+        if (Objects.nonNull(this.getStatus()) || !this.getRequesterPersonId().equals(requesterPersonId)) {
             throw new InvalidStateException(Relationship.class);
         }
 
@@ -53,8 +53,8 @@ public class Relationship implements Serializable {
                    .build();
     }
 
-    public Relationship acceptRequest() {
-        if (RelationshipStatus.PENDING != this.getStatus()) {
+    public Relationship acceptRequest(UUID receiverPersonId) {
+        if (RelationshipStatus.PENDING != this.getStatus() || !this.getReceiverPersonId().equals(receiverPersonId)) {
             throw new InvalidStateException(this.getId(), Relationship.class);
         }
 

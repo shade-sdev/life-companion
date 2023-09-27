@@ -3,8 +3,10 @@ package dev.shade.application.service.relationship.impl;
 import dev.shade.application.service.relationship.RelationshipService;
 import dev.shade.domain.relation.RelationType;
 import dev.shade.domain.relation.Relationship;
+import dev.shade.domain.repository.PersonRepository;
 import dev.shade.domain.repository.RelationshipRepository;
 import dev.shade.shared.exception.NotFoundException;
+import dev.shade.shared.security.SecurityContextHelper;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,18 @@ import java.util.UUID;
 public class RelationshipServiceImpl implements RelationshipService {
 
     private final RelationshipRepository repository;
+    private final PersonRepository personRepository;
+
+    private final SecurityContextHelper securityContextHelper;
 
     @Autowired
-    public RelationshipServiceImpl(RelationshipRepository repository) {
+    public RelationshipServiceImpl(RelationshipRepository repository,
+                                   PersonRepository personRepository,
+                                   SecurityContextHelper securityContextHelper
+    ) {
         this.repository = repository;
+        this.personRepository = personRepository;
+        this.securityContextHelper = securityContextHelper;
     }
 
     @Override
@@ -36,7 +46,10 @@ public class RelationshipServiceImpl implements RelationshipService {
                                                    .relationType(relationType)
                                                    .build();
 
-        repository.save(newRelationship.initializeRequest());
+        UUID authenticatedPersonId = personRepository.findPersonIdByUserId(securityContextHelper.userId())
+                                                     .orElseThrow(() -> new NotFoundException(String.format("Person from (userId = %s) not found", securityContextHelper.userId())));
+
+        repository.save(newRelationship.initializeRequest(authenticatedPersonId));
     }
 
     @Override
@@ -45,6 +58,9 @@ public class RelationshipServiceImpl implements RelationshipService {
         Relationship pendingRelationship = repository.findById(relationshipId)
                                                      .orElseThrow(() -> new NotFoundException(relationshipId, Relationship.class));
 
-        repository.save(pendingRelationship.acceptRequest());
+        UUID authenticatedPersonId = personRepository.findPersonIdByUserId(securityContextHelper.userId())
+                                                     .orElseThrow(() -> new NotFoundException(String.format("Person from (userId = %s) not found", securityContextHelper.userId())));
+
+        repository.save(pendingRelationship.acceptRequest(authenticatedPersonId));
     }
 }
