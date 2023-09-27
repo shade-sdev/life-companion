@@ -1,14 +1,15 @@
 package dev.shade.domain.relation;
 
-import java.io.Serializable;
-import java.util.UUID;
-
+import dev.shade.shared.domain.Auditable;
+import dev.shade.shared.exception.InvalidStateException;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Value;
 
-import dev.shade.shared.domain.Auditable;
-import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * <p>Represents a relationship between individuals. It includes information about the person's ID,
@@ -41,5 +42,25 @@ public class Relationship implements Serializable {
 
     @Default
     Auditable auditable = Auditable.builder().build();
+
+    public Relationship initializeRequest() {
+        if (Objects.nonNull(this.getStatus())) {
+            throw new InvalidStateException(Relationship.class);
+        }
+
+        return this.toBuilder()
+                   .status(RelationshipStatus.PENDING)
+                   .build();
+    }
+
+    public Relationship acceptRequest() {
+        if (RelationshipStatus.PENDING != this.getStatus()) {
+            throw new InvalidStateException(this.getId(), Relationship.class);
+        }
+
+        return this.toBuilder()
+                   .status(RelationshipStatus.ACTIVE)
+                   .build();
+    }
 
 }

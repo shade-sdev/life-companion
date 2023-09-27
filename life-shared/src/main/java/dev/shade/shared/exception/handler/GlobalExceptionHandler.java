@@ -1,5 +1,6 @@
 package dev.shade.shared.exception.handler;
 
+import dev.shade.shared.exception.InvalidStateException;
 import dev.shade.shared.exception.NotFoundException;
 import dev.shade.shared.exception.model.GlobalProblemDetail;
 import jakarta.validation.ConstraintViolationException;
@@ -23,11 +24,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new GlobalProblemDetail(ex.getCode(), ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(InvalidStateException.class)
+    public ProblemDetail handleInvalidStateException(InvalidStateException ex) {
+        return new GlobalProblemDetail(ex.getCode(), ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ProblemDetail handleConstraintViolationException(ConstraintViolationException ex) {
         return new GlobalProblemDetail("DATA_CONSTRAINT_VIOLATION",
-                                       extractErrorMessage(ex.getMessage()).orElse(ex.getMessage()),
-                                       HttpStatus.BAD_REQUEST);
+                extractErrorMessage(ex.getMessage()).orElse(ex.getMessage()),
+                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -42,10 +48,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     ResponseEntity<Object> handleGlobalException(Exception ex, WebRequest webRequest) {
         return handleExceptionInternal(ex,
-                                       null,
-                                       new HttpHeaders(),
-                                       HttpStatusCode.valueOf(500),
-                                       webRequest);
+                null,
+                new HttpHeaders(),
+                HttpStatusCode.valueOf(500),
+                webRequest);
     }
 
     @Override
@@ -53,7 +59,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                              Object body,
                                                              @NonNull HttpHeaders headers,
                                                              HttpStatusCode statusCode,
-                                                             @NonNull WebRequest request) {
+                                                             @NonNull WebRequest request
+    ) {
         HttpStatus status = HttpStatus.valueOf(statusCode.value());
         ErrorResponse build = ErrorResponse.builder(ex, status, ex.getMessage())
                                            .detail(ex.getMessage())
