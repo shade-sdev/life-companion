@@ -7,6 +7,9 @@ import dev.shade.infrastructure.repository.person.PersonJpaEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 public class JpaPersonRepositoryImpl implements PersonRepository {
 
@@ -17,6 +20,11 @@ public class JpaPersonRepositoryImpl implements PersonRepository {
     public JpaPersonRepositoryImpl(PersonJpaEntityRepository repository, JpaPersonMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
+    }
+
+    @Override
+    public Optional<Person> findById(UUID personId) {
+        return repository.findById(personId).map(mapper::mapToPerson);
     }
 
     @Override

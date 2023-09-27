@@ -5,6 +5,7 @@ import dev.shade.domain.relation.Relationship;
 import dev.shade.shared.domain.Auditable;
 import dev.shade.shared.domain.DomainValidator;
 import jakarta.validation.Valid;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Builder.Default;
@@ -13,6 +14,7 @@ import lombok.Value;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,6 +62,12 @@ public class Person extends DomainValidator<Person> implements Serializable {
     @Default
     Auditable auditable = Auditable.builder().build();
 
+    public Person validate(Validator validator) {
+        List<Class<?>> groups = new ArrayList<>();
+        this.validate(this, validator, groups.toArray(new Class[0]));
+        return this;
+    }
+
     public static Person initFromUser(UUID userId, String email) {
         return Person.builder()
                      .userId(userId)
@@ -70,6 +78,28 @@ public class Person extends DomainValidator<Person> implements Serializable {
                                          .createdBy("system")
                                          .build())
                      .build();
+    }
+
+    public Person update(Person updatedData) {
+        return this.toBuilder()
+                   .identity(this.getIdentity().toBuilder()
+                                 .firstName(updatedData.getIdentity().getFirstName())
+                                 .lastName(updatedData.getIdentity().getLastName())
+                                 .identityVisibility(updatedData.getIdentity().getIdentityVisibility())
+                                 .build())
+                   .address(this.getAddress().toBuilder()
+                                .locality(this.getAddress().getLocality())
+                                .streetName(this.getAddress().getStreetName())
+                                .houseNumber(this.getAddress().getHouseNumber())
+                                .addressVisibility(this.getAddress().getAddressVisibility())
+                                .build())
+                   .contact(this.getContact().toBuilder()
+                                .homeNumber(this.getContact().getHomeNumber())
+                                .mobileNumber(this.getContact().getMobileNumber())
+                                .contactVisibility(this.getContact().getContactVisibility())
+                                .build())
+                   .initialized(true)
+                   .build();
     }
 
     @Value
