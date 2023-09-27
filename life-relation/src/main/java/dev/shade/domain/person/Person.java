@@ -80,7 +80,7 @@ public class Person extends DomainValidator<Person> implements Serializable {
                      .build();
     }
 
-    public Person update(Person updatedData) {
+    public Person update(Person updatedData, String updatedBy) {
         return this.toBuilder()
                    .identity(this.getIdentity().toBuilder()
                                  .firstName(updatedData.getIdentity().getFirstName())
@@ -99,6 +99,9 @@ public class Person extends DomainValidator<Person> implements Serializable {
                                 .contactVisibility(this.getContact().getContactVisibility())
                                 .build())
                    .initialized(true)
+                   .auditable(this.getAuditable().toBuilder()
+                                  .lastModifiedBy(updatedBy)
+                                  .build())
                    .build();
     }
 

@@ -5,6 +5,7 @@ import dev.shade.application.service.person.PersonService;
 import dev.shade.domain.person.Person;
 import dev.shade.domain.repository.PersonRepository;
 import dev.shade.shared.exception.NotFoundException;
+import dev.shade.shared.security.SecurityContextHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
@@ -22,12 +23,18 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepository repository;
     private final PersonMapper mapper;
 
+    private final SecurityContextHelper securityContextHelper;
     private final Validator validator;
 
     @Autowired
-    public PersonServiceImpl(PersonRepository repository, PersonMapper mapper, Validator validator) {
+    public PersonServiceImpl(PersonRepository repository,
+                             PersonMapper mapper,
+                             SecurityContextHelper securityContextHelper,
+                             Validator validator
+    ) {
         this.repository = repository;
         this.mapper = mapper;
+        this.securityContextHelper = securityContextHelper;
         this.validator = validator;
     }
 
@@ -37,6 +44,6 @@ public class PersonServiceImpl implements PersonService {
         Person currentPerson = repository.findById(personId)
                                          .orElseThrow(() -> new NotFoundException(personId, Person.class));
         Person updatedData = mapper.mapToPerson(personRequest);
-        repository.save(currentPerson.update(updatedData).validate(validator));
+        repository.save(currentPerson.update(updatedData, securityContextHelper.username()).validate(validator));
     }
 }
