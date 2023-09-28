@@ -1,9 +1,8 @@
 package dev.shade.application.model.person;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
 import org.hibernate.validator.constraints.Length;
@@ -31,14 +30,14 @@ public class PersonRequest {
 
     PersonDataVisibility addressVisibility;
 
-    @Min(8)
-    @Max(8)
+    @Size(min = 8)
+    @Size(max = 8)
     @Pattern(regexp = "^5\\d{7}$", message = "Invalid phone number")
-    Integer mobileNumber;
+    String mobileNumber;
 
-    @Min(7)
-    @Max(7)
-    Integer homeNumber;
+    @Size(min = 7)
+    @Size(max = 7)
+    String homeNumber;
 
     PersonDataVisibility contactVisibility;
 }

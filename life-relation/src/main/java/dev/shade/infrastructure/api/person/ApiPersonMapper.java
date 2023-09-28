@@ -1,7 +1,9 @@
 package dev.shade.infrastructure.api.person;
 
+import dev.shade.application.model.person.PersonApiBean;
 import dev.shade.application.model.person.PersonRequest;
 import dev.shade.application.model.person.PersonUpdateRequestApiBean;
+import dev.shade.domain.person.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,5 +21,11 @@ public interface ApiPersonMapper {
     @Mapping(target = "contactVisibility", source = "contact.contactVisibility")
     @Mapping(target = "addressVisibility", source = "address.addressVisibility")
     PersonRequest mapToRequest(PersonUpdateRequestApiBean personUpdateRequestApiBean);
+
+    @Mapping(target = "auditData.createdBy", source = "auditable.createdBy")
+    @Mapping(target = "auditData.lastModifiedBy", source = "auditable.lastModifiedBy")
+    @Mapping(target = "auditData.createdDate", source = "auditable.createdDate")
+    @Mapping(target = "auditData.lastModifiedDate", source = "auditable.lastModifiedDate")
+    PersonApiBean mapToPersonApiBean(Person person);
 
 }

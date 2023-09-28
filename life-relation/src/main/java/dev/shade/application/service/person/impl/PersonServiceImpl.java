@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,6 +37,11 @@ public class PersonServiceImpl implements PersonService {
         this.mapper = mapper;
         this.securityContextHelper = securityContextHelper;
         this.validator = validator;
+    }
+
+    @Override
+    public Optional<Person> getPersonByUserId(UUID userId) {
+        return repository.findByUserId(userId);
     }
 
     @Override

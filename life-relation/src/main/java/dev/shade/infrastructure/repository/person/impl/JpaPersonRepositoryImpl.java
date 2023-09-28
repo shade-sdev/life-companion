@@ -3,6 +3,7 @@ package dev.shade.infrastructure.repository.person.impl;
 import dev.shade.domain.person.Person;
 import dev.shade.domain.repository.PersonRepository;
 import dev.shade.infrastructure.repository.person.JpaPersonMapper;
+import dev.shade.infrastructure.repository.person.PersonJpaEntity;
 import dev.shade.infrastructure.repository.person.PersonJpaEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,7 @@ public class JpaPersonRepositoryImpl implements PersonRepository {
 
     @Override
     public Person save(Person person) {
-        return mapper.mapToPerson(repository.save(mapper.mapToEntity(person)));
+        PersonJpaEntity personJpaEntity = repository.save(mapper.mapToEntity(person));
+        return mapper.mapToPerson(personJpaEntity);
     }
 }

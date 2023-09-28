@@ -12,7 +12,24 @@ tags:
     description: Relationship api
 
 paths:
-  /persons:
+  /persons/{id}:
+    get:
+      operationId: getPersonByUserId
+      summary: Get a person by user id
+      tags:
+        - persons
+      parameters:
+        - in: path
+          name: id
+          description: user id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          $ref: '#/components/responses/getPersonResponseBody'
+
     put:
       operationId: updatePerson
       summary: Updates a person
@@ -20,7 +37,8 @@ paths:
         - persons
       parameters:
         - in: path
-          name: personId
+          name: id
+          description: person id
           required: true
           schema:
             type: string
@@ -33,6 +51,24 @@ paths:
 
 components:
   schemas:
+    PersonApiBean:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        identity:
+          $ref: '#/components/schemas/PersonIdentityApiBean'
+        address:
+          $ref: '#/components/schemas/PersonAddressApiBean'
+        contact:
+          $ref: '#/components/schemas/PersonContactApiBean'
+        auditData:
+          $ref: '#/components/schemas/AuditData'
+
     PersonUpdateRequestApiBean:
       type: object
       properties:
@@ -72,17 +108,29 @@ components:
         emailAddress:
           type: string
         mobileNumber:
-          type: integer
-          format: int32
+          type: string
         homeNumber:
-          type: integer
-          format: int32
+          type: string
         contactVisibility:
           $ref: '#/components/schemas/PersonDataVisibility'
 
     PersonDataVisibility:
       type: string
       enum: [STRANGER, FRIEND, FAMILY, NONE, ALL]
+
+    AuditData:
+      type: object
+      properties:
+        createdDate:
+          type: string
+          format: local-date-time
+        createdBy:
+          type: string
+        lastModifiedDate:
+          type: string
+          format: local-date-time
+        lastModifiedBy:
+          type: string
 
   requestBodies:
     PersonUpdateRequestBody:
@@ -92,3 +140,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PersonUpdateRequestApiBean'
+
+  responses:
+    getPersonResponseBody:
+      description: A Json object containing person information
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PersonApiBean'

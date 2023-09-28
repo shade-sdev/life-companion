@@ -8,11 +8,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface PersonMapper {
 
+    @Mapping(target = "version", ignore = true)
     @Mapping(target = "userId", ignore = true)
-    @Mapping(target = "relations", ignore = true)
     @Mapping(target = "initialized", ignore = true)
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "auditable", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "identity.firstName", source = "firstName")
     @Mapping(target = "identity.lastName", source = "lastName")
     @Mapping(target = "contact.homeNumber", source = "homeNumber")

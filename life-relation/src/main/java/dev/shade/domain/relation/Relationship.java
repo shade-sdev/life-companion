@@ -43,6 +43,8 @@ public class Relationship implements Serializable {
     @Default
     Auditable auditable = Auditable.builder().build();
 
+    Long version;
+
     public Relationship initializeRequest(UUID requesterPersonId) {
         if (Objects.nonNull(this.getStatus()) || !this.getRequesterPersonId().equals(requesterPersonId)) {
             throw new InvalidStateException(Relationship.class);

@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -37,6 +38,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             detail = e.getMessage().substring(e.getMessage().indexOf("Key"));
         }
         return new GlobalProblemDetail("INTEGRITY_CONSTRAINT_VIOLATION", detail, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ProblemDetail handleAccessDeniedException(AccessDeniedException ex) {
+        return new GlobalProblemDetail("ACCESS_DENIED", ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)

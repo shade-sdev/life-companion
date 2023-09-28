@@ -60,10 +60,10 @@ databaseChangeLog:
                     unique: true
                     uniqueConstraintName: uk_person_mobile_number
                   name: mobile_number
-                  type: int
+                  type: varchar(8)
               - column:
                   name: home_number
-                  type: int
+                  type: varchar(7)
               - column:
                   constraints:
                     nullable: false

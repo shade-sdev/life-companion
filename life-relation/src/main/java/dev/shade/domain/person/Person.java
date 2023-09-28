@@ -1,7 +1,6 @@
 package dev.shade.domain.person;
 
 import dev.shade.domain.relation.RelationType;
-import dev.shade.domain.relation.Relationship;
 import dev.shade.shared.domain.Auditable;
 import dev.shade.shared.domain.DomainValidator;
 import jakarta.validation.Valid;
@@ -30,8 +29,8 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 public class Person extends DomainValidator<Person> implements Serializable {
 
-    @Default
     @NotNull
+    @Default
     UUID id = UUID.randomUUID();
 
     @NotNull
@@ -53,14 +52,12 @@ public class Person extends DomainValidator<Person> implements Serializable {
     Contact contact = Contact.builder().build();
 
     @Default
-    @Valid
-    List<Relationship> relations = List.of();
-
-    @Default
     boolean initialized = false;
 
     @Default
     Auditable auditable = Auditable.builder().build();
+
+    Long version;
 
     public Person validate(Validator validator) {
         List<Class<?>> groups = new ArrayList<>();
@@ -88,15 +85,15 @@ public class Person extends DomainValidator<Person> implements Serializable {
                                  .identityVisibility(updatedData.getIdentity().getIdentityVisibility())
                                  .build())
                    .address(this.getAddress().toBuilder()
-                                .locality(this.getAddress().getLocality())
-                                .streetName(this.getAddress().getStreetName())
-                                .houseNumber(this.getAddress().getHouseNumber())
-                                .addressVisibility(this.getAddress().getAddressVisibility())
+                                .locality(updatedData.getAddress().getLocality())
+                                .streetName(updatedData.getAddress().getStreetName())
+                                .houseNumber(updatedData.getAddress().getHouseNumber())
+                                .addressVisibility(updatedData.getAddress().getAddressVisibility())
                                 .build())
                    .contact(this.getContact().toBuilder()
-                                .homeNumber(this.getContact().getHomeNumber())
-                                .mobileNumber(this.getContact().getMobileNumber())
-                                .contactVisibility(this.getContact().getContactVisibility())
+                                .homeNumber(updatedData.getContact().getHomeNumber())
+                                .mobileNumber(updatedData.getContact().getMobileNumber())
+                                .contactVisibility(updatedData.getContact().getContactVisibility())
                                 .build())
                    .initialized(true)
                    .auditable(this.getAuditable().toBuilder()
@@ -144,14 +141,14 @@ public class Person extends DomainValidator<Person> implements Serializable {
         @Email
         String emailAddress;
 
-        @Min(8)
-        @Max(8)
+        @Size(min = 8)
+        @Size(max = 8)
         @Pattern(regexp = "^5\\d{7}$", message = "Invalid phone number")
-        Integer mobileNumber;
+        String mobileNumber;
 
-        @Min(7)
-        @Max(7)
-        Integer homeNumber;
+        @Size(min = 7)
+        @Size(max = 7)
+        String homeNumber;
 
         @Default
         RelationType contactVisibility = RelationType.NONE;

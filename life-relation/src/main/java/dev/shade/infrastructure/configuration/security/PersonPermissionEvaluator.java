@@ -51,11 +51,11 @@ public class PersonPermissionEvaluator implements TargetedPermissionEvaluator {
         return securityContextHelper.resolvePermission(scope, String.valueOf(permission));
     }
 
-    private boolean hasAccess(UUID personId, RoleCode code) {
+    private boolean hasAccess(UUID personIdOrUserId, RoleCode code) {
         return switch (code) {
             case ROLE_USER -> personRepository.findPersonIdByUserId(securityContextHelper.userId())
-                                              .map(personId::equals)
-                                              .orElse(false);
+                                              .map(personIdOrUserId::equals)
+                                              .orElse(personIdOrUserId.equals(securityContextHelper.userId()));
             case ROLE_ADMIN -> false;
         };
     }

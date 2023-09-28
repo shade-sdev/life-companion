@@ -3,7 +3,6 @@ package dev.shade.infrastructure.repository.person;
 import dev.shade.domain.person.Locality;
 import dev.shade.domain.relation.RelationType;
 import dev.shade.infrastructure.repository.Auditable;
-import dev.shade.infrastructure.repository.relation.RelationshipJpaEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +12,6 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -40,15 +38,6 @@ public class PersonJpaEntity extends Auditable implements Serializable {
 
     @Embedded
     private ContactJpaEntity contact;
-
-    @ManyToMany
-    @JoinTable(
-            name = "relationship",
-            schema = "public",
-            joinColumns = @JoinColumn(name = "requester_person_id", referencedColumnName = "id", insertable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "receiver_person_id", referencedColumnName = "id", insertable = false, updatable = false)
-    )
-    private List<RelationshipJpaEntity> relations;
 
     @Column(name = "initialized")
     private boolean initialized;

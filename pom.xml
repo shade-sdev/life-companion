@@ -13,7 +13,7 @@
     <properties>
         <java.version>17</java.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
-        <org.projectlombok.version>1.18.26</org.projectlombok.version>
+        <org.projectlombok.version>1.18.30</org.projectlombok.version>
         <org.springdoc.version>1.7.0</org.springdoc.version>
         <com.fasterxml.jackson.version>2.15.2</com.fasterxml.jackson.version>
     </properties>

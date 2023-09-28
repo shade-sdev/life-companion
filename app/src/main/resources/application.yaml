@@ -39,6 +39,7 @@ logging:
     com.atomikos: ${ATOMIKOS_LOG:INFO}
     org.springframework.cache: ${CACHE_LOG:INFO}
     org.springframework.web.cors: ${CORS_LOG:INFO}
+    org.hibernate: ${HIBERNATE:INFO}
 
 app:
   jwt:

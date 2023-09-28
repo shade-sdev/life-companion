@@ -1,7 +1,7 @@
 package dev.shade.domain.user;
 
-import dev.shade.domain.user.validation.ValidSecretKey;
 import dev.shade.application.model.user.UserUpdate;
+import dev.shade.domain.user.validation.ValidSecretKey;
 import dev.shade.shared.domain.Auditable;
 import dev.shade.shared.domain.DomainValidator;
 import jakarta.validation.Valid;
@@ -38,14 +38,16 @@ public class User extends DomainValidator<User> implements Serializable {
     @NotNull
     Role role = Role.builder().build();
 
-    @Default
-    @NotNull
-    Auditable audit = Auditable.builder().build();
-
     @Valid
     @NotNull
     @Default
     Security security = Security.builder().build();
+
+    @Default
+    @NotNull
+    Auditable audit = Auditable.builder().build();
+
+    Long version;
 
     @Value
     @Builder(toBuilder = true)
