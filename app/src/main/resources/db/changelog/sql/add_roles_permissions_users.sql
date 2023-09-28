@@ -12,7 +12,7 @@ VALUES ('6e27aa40-ae4e-42c0-81a4-869560b59968', '20f6a87d-4c6b-44b2-9d4a-2da67a6
        ('6e27aa40-ae4e-42c0-81a4-869560b59968', 'f71edd14-9f5c-4ff8-82b8-2c68bb599b4f'),
        ('c733fdec-4c9f-4ae4-8266-c073dc7d3127', '0a79aace-bcc5-4feb-9599-ea8c3b7cbb1d');
 
-INSERT INTO public.user (id, user_name, email, role_id, "password", is_account_non_locked,
+INSERT INTO user (id, user_name, email, role_id, "password", is_account_non_locked,
                          is_two_factor_enabled)
 VALUES ('fc2487bb-3b28-4645-bc5c-7ee63e561160', 'Shade', 'shade@shade.ga',
         'c733fdec-4c9f-4ae4-8266-c073dc7d3127', '$2a$10$9bCC790MnxRPoyi1os5TbuMEdi1o49G38oKXkMMNLVftyJoJ0/zYe', true,
