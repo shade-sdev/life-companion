@@ -53,6 +53,10 @@ public class PersonJpaEntity extends Auditable implements Serializable {
     @Column(name = "initialized")
     private boolean initialized;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Embeddable
     @AllArgsConstructor
     @NoArgsConstructor

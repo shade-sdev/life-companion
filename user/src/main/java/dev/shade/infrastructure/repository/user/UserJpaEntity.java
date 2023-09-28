@@ -39,6 +39,10 @@ public class UserJpaEntity extends Auditable {
     @Embedded
     private Security security;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
     @Embeddable
     @AllArgsConstructor
     @NoArgsConstructor

@@ -40,4 +40,8 @@ public class RelationshipJpaEntity extends Auditable implements Serializable {
     @Enumerated(EnumType.STRING)
     private RelationshipStatus status;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
 }

@@ -87,6 +87,9 @@ databaseChangeLog:
               - column:
                   name: last_modified_date
                   type: datetime
+              - column:
+                  name: version
+                  type: int
             tableName: person
         - createIndex:
             indexName: idx_first_name
@@ -152,6 +155,9 @@ databaseChangeLog:
               - column:
                   name: last_modified_date
                   type: datetime
+              - column:
+                  name: version
+                  type: int
             tableName: relationship
         - createIndex:
             indexName: idx_relation_type

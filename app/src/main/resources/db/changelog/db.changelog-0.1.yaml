@@ -149,6 +149,9 @@ databaseChangeLog:
               - column:
                   name: last_modified_date
                   type: DATETIME
+              - column:
+                  name: version
+                  type: int
             tableName: user
   - changeSet:
       id: 0.7
