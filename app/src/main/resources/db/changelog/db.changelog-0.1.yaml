@@ -151,7 +151,7 @@ databaseChangeLog:
                   type: DATETIME
               - column:
                   name: version
-                  type: int
+                  type: bigint
             tableName: user
   - changeSet:
       id: 0.7

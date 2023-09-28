@@ -89,7 +89,7 @@ databaseChangeLog:
                   type: datetime
               - column:
                   name: version
-                  type: int
+                  type: bigint
             tableName: person
         - createIndex:
             indexName: idx_first_name
@@ -157,7 +157,7 @@ databaseChangeLog:
                   type: datetime
               - column:
                   name: version
-                  type: int
+                  type: bigint
             tableName: relationship
         - createIndex:
             indexName: idx_relation_type
