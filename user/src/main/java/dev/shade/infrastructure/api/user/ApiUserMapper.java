@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ApiUserMapper {
 
+    @Mapping(target = "version", ignore = true)
     @Mapping(target = "security", ignore = true)
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "id", ignore = true)
