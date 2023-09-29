@@ -37,4 +37,5 @@ public class JpaRelationshipRepositoryImpl implements RelationshipRepository {
     public Optional<Relationship> findById(UUID relationshipId) {
         return repository.findById(relationshipId).map(mapper::mapToRelationship);
     }
+
 }

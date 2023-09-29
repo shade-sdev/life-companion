@@ -29,8 +29,16 @@ public class RelationshipJpaEntity extends Auditable implements Serializable {
     @Column(name = "requester_person_id")
     private UUID requesterPersonId;
 
+    @OneToOne
+    @JoinColumn(name = "requester_person_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private RelationshipPersonJpaEntity requesterPerson;
+
     @Column(name = "receiver_person_id")
     private UUID receiverPersonId;
+
+    @OneToOne
+    @JoinColumn(name = "receiver_person_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private RelationshipPersonJpaEntity receiverPerson;
 
     @Column(name = "relation_type")
     @Enumerated(EnumType.STRING)

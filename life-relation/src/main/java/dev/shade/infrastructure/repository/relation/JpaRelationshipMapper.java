@@ -11,6 +11,10 @@ public interface JpaRelationshipMapper {
     @Mapping(target = "lastModifiedBy", source = "auditable.lastModifiedBy")
     @Mapping(target = "createdDate", source = "auditable.createdDate")
     @Mapping(target = "lastModifiedDate", source = "auditable.lastModifiedDate")
+    @Mapping(target = "requesterPersonId", source = "requesterPerson.id")
+    @Mapping(target = "receiverPersonId", source = "receiverPerson.id")
+    @Mapping(target = "requesterPerson", ignore = true)
+    @Mapping(target = "receiverPerson", ignore = true)
     RelationshipJpaEntity mapToEntity(Relationship relationship);
 
     @Mapping(target = "auditable.createdBy", source = "createdBy")

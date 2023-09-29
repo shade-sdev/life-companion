@@ -54,7 +54,7 @@ public class SecurityPermissionResolver {
                                           .collect(Collectors.toSet())
     );
 
-    public boolean resolvePermission(PermissionScope scope, String permission, Set<String> authorities) {
+    protected boolean resolvePermission(PermissionScope scope, String permission, Set<String> authorities) {
         Pair<String, AccessCode> pair = getAccessPair(permission);
         Set<String> requiredPermissions = scope == PermissionScope.MINE ? getMinePermissions(pair) : getOtherPermissions(pair);
         return authorities.stream().anyMatch(requiredPermissions::contains);

@@ -42,8 +42,14 @@ public class RelationshipServiceImpl implements RelationshipService {
                                     @NotNull RelationType relationType
     ) {
         Relationship newRelationship = Relationship.builder()
-                                                   .requesterPersonId(requesterPersonId)
-                                                   .receiverPersonId(receiverPersonId)
+                                                   .requesterPerson(Relationship.RelationshipPerson
+                                                           .builder()
+                                                           .id(requesterPersonId)
+                                                           .build())
+                                                   .receiverPerson(Relationship.RelationshipPerson
+                                                           .builder()
+                                                           .id(receiverPersonId)
+                                                           .build())
                                                    .relationType(relationType)
                                                    .build();
 

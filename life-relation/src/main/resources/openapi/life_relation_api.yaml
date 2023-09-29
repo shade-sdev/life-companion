@@ -49,6 +49,36 @@ paths:
         '200':
           description: Successful Operation
 
+  /persons/relationships:
+    post:
+      operationId: requestRelationship
+      summary: Requesting relationship to another person
+      tags:
+        - relationships
+      requestBody:
+        $ref: '#/components/requestBodies/RelationshipRequestBody'
+      responses:
+        '200':
+          description: Successful Operation
+
+  /person/relationships/{relationshipId}:
+    put:
+      operationId: acceptRelationship
+      summary: Accepting relationship
+      tags:
+        - relationships
+      parameters:
+        - in: path
+          name: relationshipId
+          description: relationship id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful Operation
+
 components:
   schemas:
     PersonApiBean:
@@ -116,7 +146,23 @@ components:
 
     PersonDataVisibility:
       type: string
-      enum: [STRANGER, FRIEND, FAMILY, NONE, ALL]
+      enum: [ STRANGER, FRIEND, FAMILY, NONE, ALL ]
+
+    RelationshipRequestApiBean:
+      type: object
+      properties:
+        requesterPersonId:
+          type: string
+          format: uuid
+        receiverPersonId:
+          type: string
+          format: uuid
+        relationType:
+          $ref: '#/components/schemas/RelationType'
+
+    RelationType:
+      type: string
+      enum: [ STRANGER, FRIEND, FAMILY ]
 
     AuditData:
       type: object
@@ -140,6 +186,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PersonUpdateRequestApiBean'
+
+    RelationshipRequestBody:
+      description: A Json object containing relationship request information
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RelationshipRequestApiBean'
 
   responses:
     getPersonResponseBody:

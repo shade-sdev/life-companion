@@ -12,7 +12,8 @@ import java.util.UUID;
 public interface RelationshipJpaEntityRepository extends JpaRepository<RelationshipJpaEntity, UUID> {
 
     @Query("SELECT r.relationType FROM RelationshipJpaEntity r" +
-            " WHERE ((r.requesterPersonId = :requesterPersonId AND r.receiverPersonId = :targetedPersonId) OR" +
-            "(r.requesterPersonId = :targetedPersonId AND r.receiverPersonId = :requesterPersonId))")
+            " WHERE ((r.requesterPerson.id = :requesterPersonId AND r.receiverPerson.id = :targetedPersonId) OR" +
+            "(r.requesterPerson.id = :targetedPersonId AND r.receiverPerson.id = :requesterPersonId))")
     Optional<RelationType> getRelationType(UUID requesterPersonId, UUID targetedPersonId);
+
 }

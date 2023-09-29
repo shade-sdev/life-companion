@@ -2,12 +2,14 @@ package dev.shade.domain.relation;
 
 import dev.shade.shared.domain.Auditable;
 import dev.shade.shared.exception.InvalidStateException;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -28,10 +30,14 @@ public class Relationship implements Serializable {
     UUID id = UUID.randomUUID();
 
     @NotNull
-    UUID requesterPersonId;
+    @Valid
+    @Default
+    RelationshipPerson requesterPerson = RelationshipPerson.builder().build();
 
     @NotNull
-    UUID receiverPersonId;
+    @Valid
+    @Default
+    RelationshipPerson receiverPerson = RelationshipPerson.builder().build();
 
     @Default
     @NotNull
@@ -45,8 +51,25 @@ public class Relationship implements Serializable {
 
     Long version;
 
+    @Value
+    @Builder(toBuilder = true)
+    public static class RelationshipPerson implements Serializable {
+
+        @NotNull
+        UUID id;
+
+        UUID userId;
+
+        UUID firstName;
+
+        UUID lastName;
+    }
+
     public Relationship initializeRequest(UUID requesterPersonId) {
-        if (Objects.nonNull(this.getStatus()) || !this.getRequesterPersonId().equals(requesterPersonId)) {
+        if (Objects.nonNull(this.getStatus()) ||
+                !this.getRequesterPerson().getId().equals(requesterPersonId) ||
+                List.of(RelationType.NONE, RelationType.ALL).contains(this.getRelationType())
+        ) {
             throw new InvalidStateException(Relationship.class);
         }
 
@@ -56,7 +79,10 @@ public class Relationship implements Serializable {
     }
 
     public Relationship acceptRequest(UUID receiverPersonId) {
-        if (RelationshipStatus.PENDING != this.getStatus() || !this.getReceiverPersonId().equals(receiverPersonId)) {
+        if (RelationshipStatus.PENDING != this.getStatus() ||
+                !this.getReceiverPerson().getId().equals(receiverPersonId) ||
+                List.of(RelationType.NONE, RelationType.ALL).contains(this.getRelationType())
+        ) {
             throw new InvalidStateException(this.getId(), Relationship.class);
         }
 
