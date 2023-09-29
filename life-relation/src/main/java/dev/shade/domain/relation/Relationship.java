@@ -74,10 +74,14 @@ public class Relationship implements Serializable {
 
         return this.toBuilder()
                    .status(RelationshipStatus.PENDING)
+                   .auditable(this.getAuditable()
+                                  .toBuilder()
+                                  .createdBy("system")
+                                  .build())
                    .build();
     }
 
-    public Relationship acceptRequest(UUID receiverPersonId) {
+    public Relationship acceptRequest(UUID receiverPersonId, String acceptedBy) {
         if (RelationshipStatus.PENDING != this.getStatus() ||
                 !this.getReceiverPerson().getId().equals(receiverPersonId) ||
                 List.of(RelationType.NONE, RelationType.ALL).contains(this.getRelationType())
@@ -87,6 +91,10 @@ public class Relationship implements Serializable {
 
         return this.toBuilder()
                    .status(RelationshipStatus.ACTIVE)
+                   .auditable(this.getAuditable()
+                                  .toBuilder()
+                                  .createdBy(acceptedBy)
+                                  .build())
                    .build();
     }
 

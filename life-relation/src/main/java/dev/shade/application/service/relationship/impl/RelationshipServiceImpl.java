@@ -38,8 +38,8 @@ public class RelationshipServiceImpl implements RelationshipService {
     @Override
     @Transactional
     public Relationship requestRelationship(@NotNull UUID requesterPersonId,
-                                    @NotNull UUID receiverPersonId,
-                                    @NotNull RelationType relationType
+                                            @NotNull UUID receiverPersonId,
+                                            @NotNull RelationType relationType
     ) {
         Relationship newRelationship = Relationship.builder()
                                                    .requesterPerson(Relationship.RelationshipPerson
@@ -68,6 +68,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         UUID authenticatedPersonId = personRepository.findPersonIdByUserId(securityContextHelper.userId())
                                                      .orElseThrow(() -> new NotFoundException(securityContextHelper.userId(), "userId", Person.class));
 
-        repository.save(pendingRelationship.acceptRequest(authenticatedPersonId));
+        repository.save(pendingRelationship.acceptRequest(authenticatedPersonId, securityContextHelper.username()));
     }
 }
