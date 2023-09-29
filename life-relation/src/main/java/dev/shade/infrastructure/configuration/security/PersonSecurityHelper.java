@@ -40,7 +40,7 @@ public class PersonSecurityHelper extends SecurityContextHelper {
                         .map(Person::getIdentity)
                         .map(Person.Identity::getIdentityVisibility)
                         .ifPresent(it -> {
-                            if (targetRelationType != it && !requesterPersonId.equals(person.getId())) {
+                            if (resolveVisibility(targetRelationType, it, requesterPersonId, person.getId())) {
                                 builder.identity(null);
                             }
                         });
@@ -49,7 +49,7 @@ public class PersonSecurityHelper extends SecurityContextHelper {
                         .map(Person::getContact)
                         .map(Person.Contact::getContactVisibility)
                         .ifPresent(it -> {
-                            if (targetRelationType != it && !requesterPersonId.equals(person.getId())) {
+                            if (resolveVisibility(targetRelationType, it, requesterPersonId, person.getId())) {
                                 builder.contact(null);
                             }
                         });
@@ -58,7 +58,7 @@ public class PersonSecurityHelper extends SecurityContextHelper {
                         .map(Person::getAddress)
                         .map(Person.Address::getAddressVisibility)
                         .ifPresent(it -> {
-                            if (targetRelationType != it && !requesterPersonId.equals(person.getId())) {
+                            if (resolveVisibility(targetRelationType, it, requesterPersonId, person.getId())) {
                                 builder.address(null);
                             }
                         });
@@ -66,6 +66,17 @@ public class PersonSecurityHelper extends SecurityContextHelper {
                 yield builder.build();
             }
         };
+    }
+
+    private boolean resolveVisibility(RelationType targetRelationType,
+                                      RelationType actualRelationType,
+                                      UUID requesterPersonId,
+                                      UUID acutalPersonId
+    ) {
+        if (actualRelationType == RelationType.NONE && !requesterPersonId.equals(acutalPersonId)) {
+            return true;
+        }
+        return targetRelationType.getLevel() < actualRelationType.getLevel() && !requesterPersonId.equals(acutalPersonId);
     }
 
 }

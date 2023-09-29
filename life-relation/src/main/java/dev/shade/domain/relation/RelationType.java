@@ -1,6 +1,8 @@
 package dev.shade.domain.relation;
 
 import dev.shade.domain.person.Person;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * <p>Represents the types of relationships between individuals. This enum includes values for
@@ -12,13 +14,17 @@ import dev.shade.domain.person.Person;
  * @see Relationship
  */
 
+@RequiredArgsConstructor
+@Getter
 public enum RelationType {
     // Relation
-    STRANGER,
-    FRIEND,
-    FAMILY,
+    FAMILY(4),
+    FRIEND(3),
+    STRANGER(2),
 
     // Data
-    NONE,
-    ALL;
+    ALL(1),
+    NONE(0);
+
+    private final int level;
 }
