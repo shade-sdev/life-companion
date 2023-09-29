@@ -1,5 +1,6 @@
 package dev.shade.infrastructure.repository.relation.impl;
 
+import dev.shade.domain.relation.RelationType;
 import dev.shade.domain.relation.Relationship;
 import dev.shade.domain.repository.RelationshipRepository;
 import dev.shade.infrastructure.repository.relation.JpaRelationshipMapper;
@@ -20,6 +21,11 @@ public class JpaRelationshipRepositoryImpl implements RelationshipRepository {
     public JpaRelationshipRepositoryImpl(RelationshipJpaEntityRepository repository, JpaRelationshipMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
+    }
+
+    @Override
+    public Optional<RelationType> getRelationType(UUID requesterPersonId, UUID targetedPersonId) {
+        return repository.getRelationType(requesterPersonId, targetedPersonId);
     }
 
     @Override

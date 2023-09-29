@@ -4,7 +4,6 @@ import dev.shade.shared.security.model.AccessCode;
 import dev.shade.shared.security.model.AccessType;
 import dev.shade.shared.security.model.PermissionScope;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Optional;
@@ -13,7 +12,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Component
 public class SecurityPermissionResolver {
 
     private static final String ACCESS_CONCAT = "%s_%s";

@@ -36,7 +36,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository repository,
                            RoleRepository roleRepository,
-                           UserEventPublisher publisher, SecurityContextHelper securityContextHelper,
+                           UserEventPublisher publisher,
+                           SecurityContextHelper securityContextHelper,
                            Validator validator
     ) {
         this.repository = repository;

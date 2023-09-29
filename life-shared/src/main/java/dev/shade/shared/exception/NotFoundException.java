@@ -26,5 +26,9 @@ public class NotFoundException extends LifeCompanionException {
         super(DEFAULT_MESSAGE, ErrorCode.NOT_FOUND, id, clazz);
     }
 
+    public NotFoundException(UUID id, String idType, Class<?> clazz) {
+        super(DEFAULT_MESSAGE, ErrorCode.NOT_FOUND, idType, id, clazz);
+    }
+
 }
 

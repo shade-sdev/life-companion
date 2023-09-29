@@ -29,4 +29,10 @@ public class LifeCompanionException extends RuntimeException {
         this.errorCode = errorCode;
         this.code = String.format("%s_%s", clazz.getSimpleName().toUpperCase(), errorCode.getCode());
     }
+
+    public LifeCompanionException(String message, ErrorCode errorCode, String idType, UUID id, Class<?> clazz) {
+        super(String.format("%s from (%s = %s) %s", clazz.getSimpleName(), idType, id, message));
+        this.errorCode = errorCode;
+        this.code = String.format("%s_%s", clazz.getSimpleName().toUpperCase(), errorCode.getCode());
+    }
 }

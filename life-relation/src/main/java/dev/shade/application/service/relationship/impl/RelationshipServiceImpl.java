@@ -1,6 +1,7 @@
 package dev.shade.application.service.relationship.impl;
 
 import dev.shade.application.service.relationship.RelationshipService;
+import dev.shade.domain.person.Person;
 import dev.shade.domain.relation.RelationType;
 import dev.shade.domain.relation.Relationship;
 import dev.shade.domain.repository.PersonRepository;
@@ -47,7 +48,7 @@ public class RelationshipServiceImpl implements RelationshipService {
                                                    .build();
 
         UUID authenticatedPersonId = personRepository.findPersonIdByUserId(securityContextHelper.userId())
-                                                     .orElseThrow(() -> new NotFoundException(String.format("Person from (userId = %s) not found", securityContextHelper.userId())));
+                                                     .orElseThrow(() -> new NotFoundException(securityContextHelper.userId(), "userId", Person.class));
 
         repository.save(newRelationship.initializeRequest(authenticatedPersonId));
     }
@@ -59,7 +60,7 @@ public class RelationshipServiceImpl implements RelationshipService {
                                                      .orElseThrow(() -> new NotFoundException(relationshipId, Relationship.class));
 
         UUID authenticatedPersonId = personRepository.findPersonIdByUserId(securityContextHelper.userId())
-                                                     .orElseThrow(() -> new NotFoundException(String.format("Person from (userId = %s) not found", securityContextHelper.userId())));
+                                                     .orElseThrow(() -> new NotFoundException(securityContextHelper.userId(), "userId", Person.class));
 
         repository.save(pendingRelationship.acceptRequest(authenticatedPersonId));
     }
