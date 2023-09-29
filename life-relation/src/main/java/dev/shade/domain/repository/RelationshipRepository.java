@@ -10,7 +10,7 @@ public interface RelationshipRepository {
 
     Optional<RelationType> getRelationType(UUID requesterPersonId, UUID targetedPersonId);
 
-    void save(Relationship relationship);
+    Relationship save(Relationship relationship);
 
     Optional<Relationship> findById(UUID relationshipId);
 }

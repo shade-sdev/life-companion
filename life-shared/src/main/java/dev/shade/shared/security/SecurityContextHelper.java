@@ -55,6 +55,10 @@ public class SecurityContextHelper extends SecurityPermissionResolver {
         return resolvePermission(scope, permission, authorities());
     }
 
+    public boolean resolvePermission(String permission) {
+        return resolvePermission(permission, authorities());
+    }
+
     public boolean hasRole(RoleCode code) {
         return authorities()
                 .stream()

@@ -29,8 +29,8 @@ public class JpaRelationshipRepositoryImpl implements RelationshipRepository {
     }
 
     @Override
-    public void save(Relationship relationship) {
-        repository.save(mapper.mapToEntity(relationship));
+    public Relationship save(Relationship relationship) {
+        return mapper.mapToRelationship(repository.save(mapper.mapToEntity(relationship)));
     }
 
     @Override

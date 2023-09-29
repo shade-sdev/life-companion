@@ -10,7 +10,6 @@ import lombok.Value;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -60,13 +59,13 @@ public class Relationship implements Serializable {
 
         UUID userId;
 
-        UUID firstName;
+        String firstName;
 
-        UUID lastName;
+        String lastName;
     }
 
     public Relationship initializeRequest(UUID requesterPersonId) {
-        if (Objects.nonNull(this.getStatus()) ||
+        if (RelationshipStatus.PENDING != this.getStatus() ||
                 !this.getRequesterPerson().getId().equals(requesterPersonId) ||
                 List.of(RelationType.NONE, RelationType.ALL).contains(this.getRelationType())
         ) {

@@ -61,7 +61,7 @@ paths:
         '200':
           description: Successful Operation
 
-  /person/relationships/{relationshipId}:
+  /persons/relationships/{relationshipId}:
     put:
       operationId: acceptRelationship
       summary: Accepting relationship

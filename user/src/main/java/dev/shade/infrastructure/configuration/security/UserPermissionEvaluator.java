@@ -38,11 +38,17 @@ public class UserPermissionEvaluator implements TargetedPermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        PermissionScope scope = Optional.of(targetId.toString())
-                                        .map(UUID::fromString)
-                                        .map(it -> hasAccess(it, securityContextHelper.roleCode()))
-                                        .map(it -> Boolean.TRUE.equals(it) ? MINE : OTHER)
-                                        .orElse(OTHER);
+        Optional<UUID> id = Optional.ofNullable(targetId)
+                                    .map(Object::toString)
+                                    .map(UUID::fromString);
+
+        if (id.isEmpty()) {
+            return securityContextHelper.resolvePermission(String.valueOf(permission));
+        }
+
+        PermissionScope scope = id.map(it -> hasAccess(it, securityContextHelper.roleCode()))
+                                  .map(it -> Boolean.TRUE.equals(it) ? MINE : OTHER)
+                                  .orElse(OTHER);
 
         return securityContextHelper.resolvePermission(scope, String.valueOf(permission));
     }

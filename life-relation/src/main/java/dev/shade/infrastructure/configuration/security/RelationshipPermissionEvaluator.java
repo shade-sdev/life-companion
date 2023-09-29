@@ -52,12 +52,12 @@ public class RelationshipPermissionEvaluator implements TargetedPermissionEvalua
 
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        Optional<UUID> relationshipId = Optional.of(targetId)
+        Optional<UUID> relationshipId = Optional.ofNullable(targetId)
                                                 .map(Object::toString)
                                                 .map(UUID::fromString);
 
         if (relationshipId.isEmpty()) {
-            return securityContextHelper.resolvePermission(MINE, String.valueOf(permission));
+            return securityContextHelper.resolvePermission(String.valueOf(permission));
         }
 
         UUID currentPersonId = personRepository.findPersonIdByUserId(securityContextHelper.userId())

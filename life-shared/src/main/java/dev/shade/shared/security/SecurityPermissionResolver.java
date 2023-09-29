@@ -5,6 +5,7 @@ import dev.shade.shared.security.model.AccessType;
 import dev.shade.shared.security.model.PermissionScope;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -57,6 +58,14 @@ public class SecurityPermissionResolver {
     protected boolean resolvePermission(PermissionScope scope, String permission, Set<String> authorities) {
         Pair<String, AccessCode> pair = getAccessPair(permission);
         Set<String> requiredPermissions = scope == PermissionScope.MINE ? getMinePermissions(pair) : getOtherPermissions(pair);
+        return authorities.stream().anyMatch(requiredPermissions::contains);
+    }
+
+    protected boolean resolvePermission(String permission, Set<String> authorities) {
+        Pair<String, AccessCode> pair = getAccessPair(permission);
+        Set<String> requiredPermissions = Stream.of(getMinePermissions(pair), getOtherPermissions(pair))
+                                                .flatMap(Collection::stream)
+                                                .collect(Collectors.toSet());
         return authorities.stream().anyMatch(requiredPermissions::contains);
     }
 
