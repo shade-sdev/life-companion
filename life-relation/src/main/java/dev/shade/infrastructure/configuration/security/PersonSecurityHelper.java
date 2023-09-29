@@ -76,7 +76,7 @@ public class PersonSecurityHelper extends SecurityContextHelper {
         if (actualRelationType == RelationType.NONE && !requesterPersonId.equals(acutalPersonId)) {
             return true;
         }
-        return targetRelationType.getLevel() < actualRelationType.getLevel() && !requesterPersonId.equals(acutalPersonId);
+        return actualRelationType.getLevel() > targetRelationType.getLevel() && !requesterPersonId.equals(acutalPersonId);
     }
 
 }
