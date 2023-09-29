@@ -93,7 +93,7 @@ public class Relationship implements Serializable {
                    .status(RelationshipStatus.ACTIVE)
                    .auditable(this.getAuditable()
                                   .toBuilder()
-                                  .createdBy(acceptedBy)
+                                  .lastModifiedBy(acceptedBy)
                                   .build())
                    .build();
     }
