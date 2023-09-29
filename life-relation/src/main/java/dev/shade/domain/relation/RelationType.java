@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
  * @see Person
  * @see Relationship
  */
-
 @RequiredArgsConstructor
 @Getter
 public enum RelationType {

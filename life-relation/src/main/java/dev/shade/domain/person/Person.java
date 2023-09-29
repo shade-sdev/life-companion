@@ -1,6 +1,7 @@
 package dev.shade.domain.person;
 
 import dev.shade.domain.relation.RelationType;
+import dev.shade.domain.relation.Relationship;
 import dev.shade.shared.domain.Auditable;
 import dev.shade.shared.domain.DomainValidator;
 import jakarta.validation.Valid;
@@ -23,6 +24,7 @@ import java.util.UUID;
  *
  * @author Shade
  * @version 1.0
+ * @see Relationship
  */
 @Value
 @EqualsAndHashCode(callSuper = false)

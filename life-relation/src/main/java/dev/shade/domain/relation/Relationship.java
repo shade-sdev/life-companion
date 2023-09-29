@@ -20,7 +20,6 @@ import java.util.UUID;
  * @version 1.0
  * @see RelationType
  */
-
 @Value
 @Builder(toBuilder = true)
 public class Relationship implements Serializable {
