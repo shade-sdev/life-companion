@@ -79,6 +79,65 @@ paths:
         '200':
           description: Successful Operation
 
+  /persons/{personId}/relationships:
+    get:
+      operationId: searchRelationship
+      summary: Search relationship of a person
+      tags:
+        - relationships
+      parameters:
+        - in: path
+          name: personId
+          description: person id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: firstName
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: lastName
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: statuses
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RelationshipStatus'
+        - in: query
+          name: relationtypes
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RelationType'
+        - in: query
+          name: relationVisibilities
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/PersonDataVisibility'
+        - in: query
+          name: pageNumber
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/searchRelationshipResponseBody'
+
 components:
   schemas:
     PersonApiBean:
@@ -160,9 +219,55 @@ components:
         relationType:
           $ref: '#/components/schemas/RelationType'
 
+    SearchRelationshipsApiBean:
+      type: object
+      properties:
+        relationships:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelationshipApiBean'
+        pageSize:
+          type: integer
+        pageNumber:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+
+    RelationshipApiBean:
+      type: object
+      properties:
+        requesterPerson:
+          $ref: '#/components/schemas/RelationshipPersonApiBean'
+        status:
+          $ref: "#/components/schemas/RelationshipStatus"
+        relationtype:
+          $ref: "#/components/schemas/PersonDataVisibility"
+        auditData:
+          $ref: '#/components/schemas/AuditData'
+
+    RelationshipPersonApiBean:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        relationVisibility:
+          $ref: '#/components/schemas/PersonDataVisibility'
     RelationType:
       type: string
       enum: [ STRANGER, FRIEND, FAMILY ]
+
+    RelationshipStatus:
+      type: string
+      enum: [ PENDING, ACTIVE ]
 
     AuditData:
       type: object
@@ -202,3 +307,10 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PersonApiBean'
+
+    searchRelationshipResponseBody:
+      description: A Json object containing relationship information
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchRelationshipsApiBean'

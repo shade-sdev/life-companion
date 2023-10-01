@@ -48,6 +48,14 @@ public class RelationshipJpaEntity extends Auditable implements Serializable {
     @Enumerated(EnumType.STRING)
     private RelationshipStatus status;
 
+    @Column(name = "requester_relation_visibility")
+    @Enumerated(EnumType.STRING)
+    private RelationType requesterRelationVisibility;
+
+    @Column(name = "receiver_relation_visibility")
+    @Enumerated(EnumType.STRING)
+    private RelationType receiverRelationVisibility;
+
     @Version
     @Column(name = "version")
     private Long version;

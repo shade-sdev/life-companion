@@ -144,6 +144,16 @@ databaseChangeLog:
                   name: relationship_status
                   type: varchar(255)
               - column:
+                  constraints:
+                    nullable: false
+                  name: requester_relation_visibility
+                  type: varchar(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: receiver_relation_visibility
+                  type: varchar(255)
+              - column:
                   name: created_by
                   type: varchar(255)
               - column:

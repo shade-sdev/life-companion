@@ -3,6 +3,10 @@ package dev.shade.infrastructure.repository.relation;
 import dev.shade.domain.relation.Relationship;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface JpaRelationshipMapper {
@@ -22,4 +26,12 @@ public interface JpaRelationshipMapper {
     @Mapping(target = "auditable.createdDate", source = "createdDate")
     @Mapping(target = "auditable.lastModifiedDate", source = "lastModifiedDate")
     Relationship mapToRelationship(RelationshipJpaEntity relationshipJpaEntity);
+
+    default Page<Relationship> mapToPageRelationship(Page<RelationshipJpaEntity> relationshipJpaEntityPage) {
+        return new PageImpl<>(mapToRelationships(relationshipJpaEntityPage.getContent()),
+                relationshipJpaEntityPage.getPageable(),
+                relationshipJpaEntityPage.getTotalElements());
+    }
+
+    List<Relationship> mapToRelationships(List<RelationshipJpaEntity> relationshipJpaEntities);
 }

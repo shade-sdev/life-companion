@@ -45,6 +45,12 @@ public class Relationship implements Serializable {
     RelationshipStatus status = RelationshipStatus.PENDING;
 
     @Default
+    RelationType requesterRelationVisibility = RelationType.NONE;
+
+    @Default
+    RelationType receiverRelationVisibility = RelationType.NONE;
+
+    @Default
     Auditable auditable = Auditable.builder().build();
 
     Long version;
