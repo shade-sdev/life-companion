@@ -26,7 +26,8 @@ public interface ApiRelationshipMapper {
                 .relationships(mapToRelationshipApiBean(relationshipPage.getContent()))
                 .pageNumber(relationshipPage.getNumber())
                 .pageSize(relationshipPage.getSize())
-                .totalElements(relationshipPage.getTotalElements());
+                .totalElements(relationshipPage.getTotalElements())
+                .getTotalPages(relationshipPage.getTotalPages());
     }
 
     List<RelationshipApiBean> mapToRelationshipApiBean(List<Relationship> relationships);
@@ -36,6 +37,16 @@ public interface ApiRelationshipMapper {
     @Mapping(target = "auditData.lastModifiedBy", source = "auditable.lastModifiedBy")
     @Mapping(target = "auditData.createdDate", source = "auditable.createdDate")
     @Mapping(target = "auditData.lastModifiedDate", source = "auditable.lastModifiedDate")
+    @Mapping(target = "requesterPerson.relationVisibility", source = "requesterRelationVisibility")
+    @Mapping(target = "receiverPerson.relationVisibility", source = "receiverRelationVisibility")
+    @Mapping(target = "requesterPerson.id", source = "requesterPerson.id")
+    @Mapping(target = "requesterPerson.firstName", source = "requesterPerson.firstName")
+    @Mapping(target = "requesterPerson.lastName", source = "requesterPerson.lastName")
+    @Mapping(target = "requesterPerson.userId", source = "requesterPerson.userId")
+    @Mapping(target = "receiverPerson.id", source = "receiverPerson.id")
+    @Mapping(target = "receiverPerson.firstName", source = "receiverPerson.firstName")
+    @Mapping(target = "receiverPerson.lastName", source = "receiverPerson.lastName")
+    @Mapping(target = "receiverPerson.userId", source = "receiverPerson.userId")
     RelationshipApiBean mapToRelationshipApiBean(Relationship relationship);
 
 }

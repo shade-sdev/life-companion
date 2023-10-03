@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Value
-@Builder
+@Builder(toBuilder = true)
 public class RelationshipSearchCriteria {
 
     String firstName;
@@ -31,4 +31,8 @@ public class RelationshipSearchCriteria {
 
     @NotNull
     UUID personId;
+
+    UUID authenticatedPersonId;
+
+    RelationType targetRelationType;
 }

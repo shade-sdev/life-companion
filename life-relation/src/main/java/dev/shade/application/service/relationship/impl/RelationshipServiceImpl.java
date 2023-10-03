@@ -13,12 +13,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.HashSet;
 import java.util.UUID;
 
 @Service
@@ -43,14 +41,8 @@ public class RelationshipServiceImpl implements RelationshipService {
     @Override
     public Page<Relationship> search(@Valid @NotNull RelationshipSearchCriteria searchCriteria,
                                      Integer pageNumber,
-                                     Integer pageSize
-    ) {
-        Page<Relationship> search = repository.search(searchCriteria, pageNumber, pageSize);
-        return new PageImpl<>(relationshipSecurityHelper.securityFilter(
-                new HashSet<>(search.getContent()),
-                searchCriteria.getPersonId()).stream().toList(),
-                search.getPageable(),
-                search.getTotalElements());
+                                     Integer pageSize) {
+        return repository.search(relationshipSecurityHelper.securityFiler(searchCriteria), pageNumber, pageSize);
     }
 
     @Override

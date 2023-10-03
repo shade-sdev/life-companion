@@ -233,11 +233,15 @@ components:
         totalElements:
           type: integer
           format: int64
+        getTotalPages:
+          type: integer
 
     RelationshipApiBean:
       type: object
       properties:
         requesterPerson:
+          $ref: '#/components/schemas/RelationshipPersonApiBean'
+        receiverPerson:
           $ref: '#/components/schemas/RelationshipPersonApiBean'
         status:
           $ref: "#/components/schemas/RelationshipStatus"

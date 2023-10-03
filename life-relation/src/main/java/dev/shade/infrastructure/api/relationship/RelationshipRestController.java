@@ -12,6 +12,7 @@ import dev.shade.infrastructure.api.person.RelationshipsApi;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -52,19 +53,20 @@ public class RelationshipRestController implements RelationshipsApi {
             builder.lastName(lastName);
         }
 
-        if (!statuses.isEmpty()) {
+        if (!CollectionUtils.isEmpty(statuses)) {
             statuses.forEach(it -> builder.status(mapper.mapToRelationshipStatus(it)));
         }
 
-        if (!relationtypes.isEmpty()) {
+        if (!CollectionUtils.isEmpty(relationtypes)) {
             relationtypes.forEach(it -> builder.relationType(mapper.mapToRelationType(it)));
         }
 
-        if (!relationtypes.isEmpty()) {
+        if (!CollectionUtils.isEmpty(relationVisibilities)) {
             relationVisibilities.forEach(it -> builder.relationVisibility(mapper.mapToDataRelationType(it)));
         }
 
         builder.personId(personId);
+
         return ResponseEntity.ok(mapper.mapToSearchApiBean(service.search(builder.build(), pageNumber, pageSize)));
     }
 
