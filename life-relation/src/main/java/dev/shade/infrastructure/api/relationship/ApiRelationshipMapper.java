@@ -27,7 +27,7 @@ public interface ApiRelationshipMapper {
                 .pageNumber(relationshipPage.getNumber())
                 .pageSize(relationshipPage.getSize())
                 .totalElements(relationshipPage.getTotalElements())
-                .getTotalPages(relationshipPage.getTotalPages());
+                .totalPages(relationshipPage.getTotalPages());
     }
 
     List<RelationshipApiBean> mapToRelationshipApiBean(List<Relationship> relationships);

@@ -233,7 +233,7 @@ components:
         totalElements:
           type: integer
           format: int64
-        getTotalPages:
+        totalPages:
           type: integer
 
     RelationshipApiBean:
