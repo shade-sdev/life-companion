@@ -1,16 +1,18 @@
 package dev.shade.infrastructure.configuration.security;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import dev.shade.application.model.person.PersonSearchCriteria;
 import dev.shade.domain.person.Person;
 import dev.shade.domain.relation.RelationType;
 import dev.shade.domain.repository.PersonRepository;
 import dev.shade.domain.repository.RelationshipRepository;
 import dev.shade.shared.exception.NotFoundException;
 import dev.shade.shared.security.SecurityContextHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @Component
 public class PersonSecurityHelper extends SecurityContextHelper {
@@ -22,6 +24,14 @@ public class PersonSecurityHelper extends SecurityContextHelper {
     public PersonSecurityHelper(PersonRepository personRepository, RelationshipRepository relationshipRepository) {
         this.personRepository = personRepository;
         this.relationshipRepository = relationshipRepository;
+    }
+
+    public PersonSearchCriteria securityFiler(PersonSearchCriteria criteria) {
+        UUID authenticatedPersonId = personRepository.findPersonIdByUserId(userId())
+                                                     .orElseThrow(() -> new NotFoundException(userId(), "userId", Person.class));
+        return criteria.toBuilder()
+                       .authenticatedPersonId(authenticatedPersonId)
+                       .build();
     }
 
     public Person securityFilter(Person person) {
