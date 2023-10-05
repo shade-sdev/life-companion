@@ -96,7 +96,6 @@ public class JpaPersonRepositoryImpl implements PersonRepository {
     }
 
     private BooleanExpression relatedPredicate(QPersonJpaEntity person, UUID authenticatedPersonId, StringPath path, String search) {
-
         return (person.receiverRelations.any().requesterPersonId.eq(authenticatedPersonId)
                                                                 .and(person.receiverRelations.any().receiverPersonId.eq(person.receiverRelations.any().receiverPersonId)))
                 .or((person.requesterRelations.any().receiverPersonId.eq(authenticatedPersonId)
