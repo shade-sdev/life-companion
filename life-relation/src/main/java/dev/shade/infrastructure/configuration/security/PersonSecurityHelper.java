@@ -31,7 +31,9 @@ public class PersonSecurityHelper extends SecurityContextHelper {
         UUID authenticatedPersonId = personRepository.findPersonIdByUserId(userId())
                                                      .orElseThrow(() -> new NotFoundException(userId(), "userId", Person.class));
         return criteria.toBuilder()
-                       .authenticatedPersonId(RoleCode.ROLE_ADMIN == roleCode() ? null : authenticatedPersonId)
+                       .authenticatedPersonId(RoleCode.ROLE_ADMIN == roleCode()
+                                                      ? null
+                                                      : authenticatedPersonId)
                        .build();
     }
 
