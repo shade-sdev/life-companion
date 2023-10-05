@@ -1,5 +1,6 @@
 package dev.shade.infrastructure.repository.person.impl;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -64,22 +65,33 @@ public class JpaPersonRepositoryImpl implements PersonRepository {
         var person = QPersonJpaEntity.personJpaEntity;
         BooleanExpression expression = Expressions.TRUE.isTrue();
 
-        if (StringUtils.isNotBlank(criteria.getFirstName())) {
+        // USER
+        if (StringUtils.isNotBlank(criteria.getFirstName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
             expression = expression.and(Expressions.anyOf(
                     relatedPredicate(person, criteria.getAuthenticatedPersonId(), person.identity.firstName, criteria.getFirstName()),
                     person.identity.firstName.eq(criteria.getFirstName())
             ));
         }
 
-        if (StringUtils.isNotBlank(criteria.getLastName())) {
+        if (StringUtils.isNotBlank(criteria.getLastName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
             expression = expression.and(Expressions.anyOf(
                     relatedPredicate(person, criteria.getAuthenticatedPersonId(), person.identity.lastName, criteria.getLastName()),
                     person.identity.lastName.eq(criteria.getLastName())
             ));
         }
 
-        if (StringUtils.isBlank(criteria.getFirstName()) && StringUtils.isBlank(criteria.getLastName())) {
+        if (StringUtils.isBlank(criteria.getFirstName()) && StringUtils.isBlank(criteria.getLastName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
             return Expressions.TRUE.isFalse();
+        }
+
+
+        // ADMIN
+        if (StringUtils.isNotBlank(criteria.getFirstName()) && Objects.isNull(criteria.getAuthenticatedPersonId())) {
+            expression = expression.and(person.identity.firstName.containsIgnoreCase(criteria.getFirstName()));
+        }
+
+        if (StringUtils.isNotBlank(criteria.getLastName()) && Objects.isNull(criteria.getAuthenticatedPersonId())) {
+            expression = expression.and(person.identity.lastName.containsIgnoreCase(criteria.getLastName()));
         }
 
         return expression;

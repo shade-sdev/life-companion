@@ -13,6 +13,7 @@ import dev.shade.domain.repository.PersonRepository;
 import dev.shade.domain.repository.RelationshipRepository;
 import dev.shade.shared.exception.NotFoundException;
 import dev.shade.shared.security.SecurityContextHelper;
+import dev.shade.shared.security.model.RoleCode;
 
 @Component
 public class PersonSecurityHelper extends SecurityContextHelper {
@@ -30,7 +31,7 @@ public class PersonSecurityHelper extends SecurityContextHelper {
         UUID authenticatedPersonId = personRepository.findPersonIdByUserId(userId())
                                                      .orElseThrow(() -> new NotFoundException(userId(), "userId", Person.class));
         return criteria.toBuilder()
-                       .authenticatedPersonId(authenticatedPersonId)
+                       .authenticatedPersonId(RoleCode.ROLE_ADMIN == roleCode() ? null : authenticatedPersonId)
                        .build();
     }
 
