@@ -12,6 +12,39 @@ tags:
     description: Relationship api
 
 paths:
+  /persons:
+    get:
+      operationId: searchPersons
+      summary: Search persons
+      tags:
+        - persons
+      parameters:
+        - in: query
+          name: firstName
+          description: person's first name
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: lastName
+          description: person's last name
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: pageNumber
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/searchPersonResponseBody'
+
   /persons/{id}:
     get:
       operationId: getPersonByUserId
@@ -203,6 +236,31 @@ components:
         contactVisibility:
           $ref: '#/components/schemas/PersonDataVisibility'
 
+    SearchPersonsApiBean:
+      type: object
+      properties:
+        persons:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchPersonApiBean'
+        pageSize:
+          type: integer
+        pageNumber:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+
+    SearchPersonApiBean:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+
     PersonDataVisibility:
       type: string
       enum: [ STRANGER, FRIEND, FAMILY, NONE, ALL ]
@@ -311,6 +369,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PersonApiBean'
+
+    searchPersonResponseBody:
+      description: A Json object containing person information
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchPersonsApiBean'
 
     searchRelationshipResponseBody:
       description: A Json object containing relationship information

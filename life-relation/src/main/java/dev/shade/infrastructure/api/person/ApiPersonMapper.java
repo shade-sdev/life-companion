@@ -1,11 +1,12 @@
 package dev.shade.infrastructure.api.person;
 
-import dev.shade.application.model.person.PersonApiBean;
-import dev.shade.application.model.person.PersonRequest;
-import dev.shade.application.model.person.PersonUpdateRequestApiBean;
+import dev.shade.application.model.person.*;
 import dev.shade.domain.person.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ApiPersonMapper {
@@ -27,5 +28,20 @@ public interface ApiPersonMapper {
     @Mapping(target = "auditData.createdDate", source = "auditable.createdDate")
     @Mapping(target = "auditData.lastModifiedDate", source = "auditable.lastModifiedDate")
     PersonApiBean mapToPersonApiBean(Person person);
+
+    @Mapping(target = "firstName", source = "identity.firstName")
+    @Mapping(target = "lastName", source = "identity.lastName")
+    SearchPersonApiBean mapToSearchPersonApiBean(Person person);
+
+    List<SearchPersonApiBean> mapToSearchPersonsApiBean(List<Person> persons);
+
+    default SearchPersonsApiBean mapToSearchPersonsApiBean(Page<Person> personPage) {
+        return new SearchPersonsApiBean()
+                .persons(mapToSearchPersonsApiBean(personPage.getContent()))
+                .pageSize(personPage.getSize())
+                .pageNumber(personPage.getNumber())
+                .totalPages(personPage.getTotalPages())
+                .totalElements(personPage.getTotalElements());
+    }
 
 }

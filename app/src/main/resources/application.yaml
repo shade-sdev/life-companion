@@ -40,6 +40,7 @@ logging:
     org.springframework.cache: ${CACHE_LOG:INFO}
     org.springframework.web.cors: ${CORS_LOG:INFO}
     org.hibernate: ${HIBERNATE:INFO}
+    org.hibernate.orm.jdbc.bind: ${HIBERNATE_PARAMETER:INFO}
 
 app:
   jwt:
