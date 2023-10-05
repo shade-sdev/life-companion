@@ -1,9 +1,14 @@
 package dev.shade.infrastructure.repository.person;
 
-import dev.shade.domain.person.Person;
-import dev.shade.shared.domain.Auditable;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+
+import dev.shade.domain.person.Person;
+import dev.shade.shared.domain.Auditable;
 
 @Mapper(componentModel = "spring")
 public interface JpaPersonMapper {
@@ -17,6 +22,8 @@ public interface JpaPersonMapper {
     @Mapping(target = "lastModifiedDate", source = "auditable.lastModifiedDate")
     PersonJpaEntity mapToEntity(Person person);
 
+    List<Person> mapToPersons(List<PersonJpaEntity> personJpaEntities);
+
     default Auditable mapToAuditable(PersonJpaEntity personJpaEntity) {
         return Auditable.builder()
                         .lastModifiedBy(personJpaEntity.getLastModifiedBy())
@@ -24,6 +31,12 @@ public interface JpaPersonMapper {
                         .createdDate(personJpaEntity.getCreatedDate())
                         .lastModifiedDate(personJpaEntity.getLastModifiedDate())
                         .build();
+    }
+
+    default Page<Person> mapToPersonPage(Page<PersonJpaEntity> personJpaEntityPage) {
+        return new PageImpl<>(mapToPersons(personJpaEntityPage.getContent()),
+                              personJpaEntityPage.getPageable(),
+                              personJpaEntityPage.getTotalElements());
     }
 
 }
