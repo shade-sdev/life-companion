@@ -16,6 +16,7 @@
         <org.projectlombok.version>1.18.30</org.projectlombok.version>
         <org.springdoc.version>1.7.0</org.springdoc.version>
         <com.fasterxml.jackson.version>2.15.2</com.fasterxml.jackson.version>
+        <openapi-generator-maven-plugin.version>6.6.0</openapi-generator-maven-plugin.version>
     </properties>
 
     <groupId>dev.shade</groupId>
