@@ -17,6 +17,7 @@
         <org.springdoc.version>1.7.0</org.springdoc.version>
         <com.fasterxml.jackson.version>2.15.2</com.fasterxml.jackson.version>
         <openapi-generator-maven-plugin.version>6.6.0</openapi-generator-maven-plugin.version>
+        <com.atomikos.version>6.0.0M2</com.atomikos.version>
     </properties>
 
     <groupId>dev.shade</groupId>
