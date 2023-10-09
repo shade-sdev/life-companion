@@ -66,7 +66,6 @@ public class JpaPersonRepositoryImpl implements PersonRepository {
         BooleanExpression expression = Expressions.TRUE.isTrue();
 
         // USER
-
         if (StringUtils.isNotBlank(criteria.getFirstName()) && StringUtils.isNotBlank(criteria.getLastName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
             expression = expression.and(Expressions.anyOf(
                                            relatedPredicate(person, criteria.getAuthenticatedPersonId(), person.identity.firstName, criteria.getFirstName()),
