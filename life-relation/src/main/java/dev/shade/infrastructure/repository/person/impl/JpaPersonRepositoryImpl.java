@@ -1,9 +1,20 @@
 package dev.shade.infrastructure.repository.person.impl;
 
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringPath;
+
 import dev.shade.application.model.person.PersonSearchCriteria;
 import dev.shade.domain.person.Person;
 import dev.shade.domain.repository.PersonRepository;
@@ -11,15 +22,6 @@ import dev.shade.infrastructure.repository.person.JpaPersonMapper;
 import dev.shade.infrastructure.repository.person.PersonJpaEntity;
 import dev.shade.infrastructure.repository.person.PersonJpaEntityRepository;
 import dev.shade.infrastructure.repository.person.QPersonJpaEntity;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Repository;
-
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class JpaPersonRepositoryImpl implements PersonRepository {
@@ -64,24 +66,28 @@ public class JpaPersonRepositoryImpl implements PersonRepository {
         BooleanExpression expression = Expressions.TRUE.isTrue();
 
         // USER
-        if (StringUtils.isNotBlank(criteria.getFirstName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
+
+        if (StringUtils.isNotBlank(criteria.getFirstName()) && StringUtils.isNotBlank(criteria.getLastName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
             expression = expression.and(Expressions.anyOf(
-                    relatedPredicate(person, criteria.getAuthenticatedPersonId(), person.identity.firstName, criteria.getFirstName()),
-                    person.identity.firstName.eq(criteria.getFirstName())
-            ));
+                                           relatedPredicate(person, criteria.getAuthenticatedPersonId(), person.identity.firstName, criteria.getFirstName()),
+                                           person.identity.firstName.eq(criteria.getFirstName())))
+                                   .and(Expressions.anyOf(
+                                           relatedPredicate(person, criteria.getAuthenticatedPersonId(), person.identity.lastName, criteria.getLastName()),
+                                           person.identity.lastName.eq(criteria.getLastName())
+                                   ));
         }
 
-        if (StringUtils.isNotBlank(criteria.getLastName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
-            expression = expression.and(Expressions.anyOf(
-                    relatedPredicate(person, criteria.getAuthenticatedPersonId(), person.identity.lastName, criteria.getLastName()),
-                    person.identity.lastName.eq(criteria.getLastName())
-            ));
+        if (StringUtils.isNotBlank(criteria.getFirstName()) && StringUtils.isBlank(criteria.getLastName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
+            expression = expression.and(relatedPredicate(person, criteria.getAuthenticatedPersonId(), person.identity.firstName, criteria.getFirstName()));
+        }
+
+        if (StringUtils.isNotBlank(criteria.getLastName()) && StringUtils.isBlank(criteria.getFirstName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
+            expression = expression.and(relatedPredicate(person, criteria.getAuthenticatedPersonId(), person.identity.lastName, criteria.getLastName()));
         }
 
         if (StringUtils.isBlank(criteria.getFirstName()) && StringUtils.isBlank(criteria.getLastName()) && Objects.nonNull(criteria.getAuthenticatedPersonId())) {
             return Expressions.TRUE.isFalse();
         }
-
 
         // ADMIN
         if (StringUtils.isNotBlank(criteria.getFirstName()) && Objects.isNull(criteria.getAuthenticatedPersonId())) {
