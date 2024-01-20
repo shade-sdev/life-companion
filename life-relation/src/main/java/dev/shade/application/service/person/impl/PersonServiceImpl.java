@@ -1,14 +1,5 @@
 package dev.shade.application.service.person.impl;
 
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
-
 import dev.shade.application.model.person.PersonRequest;
 import dev.shade.application.model.person.PersonSearchCriteria;
 import dev.shade.application.service.person.PersonService;
@@ -19,6 +10,14 @@ import dev.shade.shared.exception.NotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Validated
@@ -35,7 +34,7 @@ public class PersonServiceImpl implements PersonService {
                              PersonMapper mapper,
                              PersonSecurityHelper personSecurityHelper,
                              Validator validator
-    ) {
+                            ) {
         this.repository = repository;
         this.mapper = mapper;
         this.personSecurityHelper = personSecurityHelper;
