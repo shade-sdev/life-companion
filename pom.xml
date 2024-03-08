@@ -136,27 +136,6 @@
             <version>${querydsl.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-kubernetes-dependencies</artifactId>
-            <version>0.3.0.RELEASE</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-dependencies</artifactId>
-            <version>2023.0.0</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-kubernetes-config</artifactId>
-            <version>1.1.10.RELEASE</version>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -201,21 +180,6 @@
                     </executions>
                 </plugin>
 
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>fabric8-maven-plugin</artifactId>
-                    <version>3.5.37</version>
-                    <executions>
-                        <execution>
-                            <id>fmp</id>
-                            <goals>
-                                <goal>resource</goal>
-                                <goal>build</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-
             </plugins>
         </pluginManagement>
 
@@ -246,39 +210,6 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-        </profile>
-        <profile>
-            <id>openshift</id>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework.cloud</groupId>
-                        <artifactId>spring-cloud-kubernetes-dependencies</artifactId>
-                        <version>0.3.0.RELEASE</version>
-                        <type>pom</type>
-                        <scope>import</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.springframework.cloud</groupId>
-                        <artifactId>spring-cloud-dependencies</artifactId>
-                        <version>2023.0.0</version>
-                        <type>pom</type>
-                        <scope>import</scope>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.cloud</groupId>
-                    <artifactId>spring-cloud-starter-kubernetes-config</artifactId>
-                    <version>1.1.10.RELEASE</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-actuator</artifactId>
-                </dependency>
-            </dependencies>
         </profile>
     </profiles>
 
