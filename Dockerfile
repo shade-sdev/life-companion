@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM quay.io/redcapcloud/openjdk:17
 COPY --from=build app/target/app-0.0.1.jar app-0.0.1.jar
 COPY --from=build life-relation/target/life-relation-0.0.1.jar life-relation-0.0.1.jar
 COPY --from=build life-shared/target/life-shared-0.0.1.jar life-shared-0.0.1.jar

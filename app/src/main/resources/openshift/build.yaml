@@ -11,7 +11,7 @@ spec:
     dockerStrategy:
       from:
         kind: DockerImage
-        name: openjdk:17
+        name: quay.io/redcapcloud/openjdk:17
   output:
     to:
       kind: ImageStreamTag
