@@ -6,11 +6,5 @@ data:
   db_host: "your-db-host"
   db_port: "your-db-port"
   db_name: "your-db-name"
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: jwt-config
-data:
   access_token_expiration: "your-db-host"
   refresh_token_expiration: "your-db-port"

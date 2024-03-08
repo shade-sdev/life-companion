@@ -12,14 +12,29 @@ spec:
       labels:
         app: life-companion-app
     spec:
+      volumes:
+        - name: config-volume
+          configMap:
+            name: db-config
+        - name: secret-volume
+          secret:
+            secretName: db-secret
       containers:
         - name: life-companion-app
-          image: life-companion-app:latest
+          image: ""
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/src/resources/openshift/configmap.yaml
+              subPath: configmap.yaml
+            - name: secret-volume
+              mountPath: /app/src/resources/openshift/secret.yaml
+              subPath: secret.yaml
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: openshift
+              value: dev
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
@@ -48,17 +63,17 @@ spec:
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: jwt-secret
+                  name: db-secret
                   key: jwt_secret
             - name: ACCESS_TOKEN_EXPIRATION
               valueFrom:
                 configMapKeyRef:
-                  name: jwt-config
+                  name: db-config
                   key: access_token_expiration
             - name: REFRESH_TOKEN_EXPIRATION
               valueFrom:
                 configMapKeyRef:
-                  name: jwt-config
+                  name: db-config
                   key: refresh_token_expiration
           resources:
             requests:
