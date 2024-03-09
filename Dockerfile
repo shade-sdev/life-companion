@@ -32,6 +32,11 @@ COPY --from=build /app/user/target/user-0.0.1.jar /user-0.0.1.jar
 COPY --from=build /app/app/src/main/resources/openshift/configmap.yaml ./configmap.yaml
 COPY --from=build /app/app/src/main/resources/openshift/secret.yaml ./secret.yaml
 
+FROM registry.redhat.io/openshift4/oc-cli AS oc-cli
+
+# Update the ConfigMap
+RUN oc create configmap db-config --from-file=configmap.yaml=/tmp/configmap.yaml --dry-run=client -o yaml | oc apply -f -
+
 # Expose port 8080
 EXPOSE 8080
 
