@@ -13,12 +13,14 @@ spec:
         app: life-companion-app
     spec:
       volumes:
-        - name: config-volume
+        - name: configmap-volume
           configMap:
             name: db-config
+            defaultMode: 777
         - name: secret-volume
           secret:
             secretName: db-secret
+            defaultMode: 777
       containers:
         - name: life-companion-app
           image: ""
@@ -26,12 +28,12 @@ spec:
           ports:
             - containerPort: 8080
           volumeMounts:
-            - name: config-volume
-              mountPath: /app/src/resources/openshift/configmap.yaml
-              subPath: configmap.yaml
-            - name: secret-volume
-              mountPath: /app/src/resources/openshift/secret.yaml
-              subPath: secret.yaml
+            - name: db-secret
+              readOnly: true
+              mountPath: /app/secret.yaml
+            - name: db-config
+              readOnly: true
+              mountPath: /app/configmap.yaml
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: dev

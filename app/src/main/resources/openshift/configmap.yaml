@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: db-config
 data:
-  db_host: "your-db-host"
+  db_host: "damam"
   db_port: "your-db-port"
   db_name: "your-db-name"
   access_token_expiration: "your-db-host"
