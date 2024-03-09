@@ -16,7 +16,7 @@ COPY user ./user
 RUN mvn clean package
 
 # Stage 2: Create the runtime image
-FROM quay.io/redcapcloud/openjdk:17
+FROM openjdk:17
 
 # Set the working directory in the container
 WORKDIR /app

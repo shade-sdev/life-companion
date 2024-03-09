@@ -34,6 +34,11 @@ spec:
             - name: db-config
               readOnly: true
               mountPath: /app/configmap.yaml
+          envFrom:
+            - configMapRef:
+                name: db-config
+            - secretRef:
+                name: db-secret
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: dev
