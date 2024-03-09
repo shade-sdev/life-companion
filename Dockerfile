@@ -29,8 +29,8 @@ COPY --from=build /app/security-core/target/security-core-0.0.1.jar /security-co
 COPY --from=build /app/user/target/user-0.0.1.jar /user-0.0.1.jar
 
 # Copy the ConfigMap and Secret files
-COPY --from=build /app/src/resources/openshift/configmap.yaml ./configmap.yaml
-COPY --from=build /app/src/resources/openshift/secret.yaml ./secret.yaml
+COPY --from=build /app/app/src/resources/openshift/configmap.yaml ./configmap.yaml
+COPY --from=build /app/app/src/resources/openshift/secret.yaml ./secret.yaml
 
 # Expose port 8080
 EXPOSE 8080
