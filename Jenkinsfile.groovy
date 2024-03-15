@@ -13,17 +13,17 @@ pipeline {
             }
         }
 
-        // stage('Compile') {
-        //     steps {
-        //         sh "mvn clean compile"
-        //     }
-        // }
+         stage('Compile') {
+             steps {
+                 sh "mvn clean compile"
+             }
+         }
 
-        // stage('Build') {
-        //     steps {
-        //         sh "mvn clean install"
-        //     }
-        // }
+         stage('Build') {
+             steps {
+                 sh "mvn clean install"
+             }
+         }
 
         stage('Build Docker Image') {
             steps {
