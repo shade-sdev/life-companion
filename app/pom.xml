@@ -50,7 +50,7 @@
 
         <dependency>
             <groupId>com.atomikos</groupId>
-            <artifactId>transactions-spring-boot-starter</artifactId>
+            <artifactId>transactions-spring-boot3-starter</artifactId>
             <version>${com.atomikos.version}</version>
         </dependency>
 

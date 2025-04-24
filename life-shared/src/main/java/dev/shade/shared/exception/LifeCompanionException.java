@@ -6,7 +6,6 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-
 public class LifeCompanionException extends RuntimeException {
 
     private final String code;
